@@ -1,0 +1,10 @@
+name = "forge2m-hub"
+pages_build_output_dir = "."
+compatibility_date = "2026-06-30"
+
+# Future D1 binding. Create the database when we are ready to persist users,
+# plans and subscriptions outside the seeded server catalog.
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "forge2m_hub"
+# database_id = "replace-with-cloudflare-d1-id"

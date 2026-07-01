@@ -1,0 +1,7 @@
+/dashboard /dashboard 200
+/login /login 200
+/register /register 200
+/plans /plans 200
+/apps/* /apps/:splat 200
+/not-included/* /not-included/:splat 200
+/* /index.html 200
