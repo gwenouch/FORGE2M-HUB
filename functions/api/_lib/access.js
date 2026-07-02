@@ -52,6 +52,7 @@ export function publicApp(app, session) {
     description: app.description,
     longDescription: app.longDescription,
     iconText: app.iconText,
+    image: app.image || "",
     status: app.status,
     isActive: app.isActive,
     tags: app.tags,

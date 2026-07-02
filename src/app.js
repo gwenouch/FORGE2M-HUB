@@ -16,6 +16,41 @@ const routes = {
 
 const appRoot = document.getElementById("app");
 
+const appSections = [
+  {
+    title: "Suite industrielle",
+    description: "Production, coupe, qualite et pilotage atelier.",
+    apps: ["redkerf"],
+    placeholders: [
+      { name: "Suivi production", icon: "SP", label: "Plus tard" },
+      { name: "Pareto defauts", icon: "PD", label: "Plus tard" },
+      { name: "Maintenance", icon: "MT", label: "Plus tard" },
+      { name: "Qualite", icon: "QL", label: "Plus tard" },
+      { name: "Planning atelier", icon: "PA", label: "Plus tard" },
+    ],
+  },
+  {
+    title: "Voyages & loisirs",
+    description: "Outils vendables pour organiser les projets hors atelier.",
+    apps: [],
+    placeholders: [
+      { name: "Guide voyage", icon: "GV", label: "A venir" },
+      { name: "Planificateur sejour", icon: "PS", label: "A venir" },
+      { name: "Carnet de route", icon: "CR", label: "A venir" },
+    ],
+  },
+  {
+    title: "Laboratoire Forge2M",
+    description: "Idees et modules qui pourront devenir des produits.",
+    apps: [],
+    placeholders: [
+      { name: "Scan 3D", icon: "3D", label: "Concept" },
+      { name: "Estimateur projet", icon: "EP", label: "Concept" },
+      { name: "Assistant atelier", icon: "AA", label: "Concept" },
+    ],
+  },
+];
+
 function qs(selector, root = document) {
   return root.querySelector(selector);
 }
@@ -92,7 +127,9 @@ function shell(content, options = {}) {
   appRoot.innerHTML = `
     <header class="topbar">
       <button class="brand" data-route="${logged ? "/dashboard" : "/"}" aria-label="Accueil Forge2M">
-        <span class="brand-badge">F2M</span>
+        <span class="brand-logo-wrap">
+          <img src="/assets/forge2m-logo.jpg" alt="Forge2M" class="brand-logo" />
+        </span>
         <span>
           <strong>Forge2M Apps</strong>
           <small>Suite industrielle</small>
@@ -242,24 +279,54 @@ function renderDashboard() {
   if (!requireSession()) return;
 
   const user = state.session.user;
-  const apps = state.apps.map(renderAppCard).join("");
+  const sections = renderDashboardSections(state.apps);
   shell(`
-    <section class="dashboard-head">
+    <section class="dashboard-hero">
       <div>
-        <span class="eyebrow">Dashboard</span>
+        <span class="eyebrow">Launcher Forge2M</span>
         <h1>Bonjour ${escapeHtml(user.name)}</h1>
-        <p>Vos applications Forge2M disponibles au meme endroit.</p>
+        <p>Ouvrez vos applications actives et gardez les prochains produits en vue.</p>
       </div>
       <div class="plan-pill">
         <span>Forfait actif</span>
         <strong>${escapeHtml(state.session.organization.planName)}</strong>
       </div>
     </section>
-    <section class="app-grid">${apps}</section>
+    ${sections}
   `, { wide: true });
 }
 
-function renderAppCard(app) {
+function renderDashboardSections(apps) {
+  const appBySlug = new Map(apps.map((app) => [app.slug, app]));
+
+  return appSections
+    .map((section) => {
+      const realApps = section.apps
+        .map((slug) => appBySlug.get(slug))
+        .filter(Boolean)
+        .map(renderAppTile)
+        .join("");
+      const placeholders = section.placeholders.map(renderEmptyTile).join("");
+
+      return `
+        <section class="launcher-section">
+          <div class="section-title-row">
+            <div>
+              <span class="eyebrow">${escapeHtml(section.title)}</span>
+              <p>${escapeHtml(section.description)}</p>
+            </div>
+          </div>
+          <div class="launcher-grid">
+            ${realApps}
+            ${placeholders}
+          </div>
+        </section>
+      `;
+    })
+    .join("");
+}
+
+function renderAppTile(app) {
   const statusClass = app.access.allowed ? "available" : "locked";
   const action = app.access.allowed
     ? `<a class="primary" href="/api/launch/${encodeURIComponent(app.slug)}">Ouvrir</a>`
@@ -267,21 +334,39 @@ function renderAppCard(app) {
   const badge = app.promotion
     ? `<span class="badge promo">${escapeHtml(app.promotion.badgeText)}</span>`
     : `<span class="badge ${statusClass}">${app.access.allowed ? "Actif" : "Non inclus"}</span>`;
+  const media = app.image
+    ? `<img src="${escapeHtml(app.image)}" alt="${escapeHtml(app.name)}" />`
+    : `<span>${escapeHtml(app.iconText)}</span>`;
 
   return `
-    <article class="app-card ${statusClass}">
-      <div class="app-icon">${escapeHtml(app.iconText)}</div>
-      <div class="app-card-body">
-        <div class="app-card-top">
-          <h2>${escapeHtml(app.name)}</h2>
-          ${badge}
-        </div>
+    <article class="app-tile ${statusClass}">
+      <div class="tile-image">${media}</div>
+      <div class="tile-content">
+        <div class="app-card-top">${badge}</div>
+        <h2>${escapeHtml(app.name)}</h2>
         <p>${escapeHtml(app.description)}</p>
-        <div class="tag-row">${app.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
       </div>
-      <div class="app-actions">
+      <div class="tile-actions">
         ${action}
         <button class="secondary" data-route="/apps/${escapeHtml(app.slug)}">Details</button>
+      </div>
+    </article>
+  `;
+}
+
+function renderEmptyTile(tile) {
+  return `
+    <article class="app-tile empty-slot">
+      <div class="tile-image placeholder-art">
+        <span>${escapeHtml(tile.icon)}</span>
+      </div>
+      <div class="tile-content">
+        <span class="badge locked">${escapeHtml(tile.label)}</span>
+        <h2>${escapeHtml(tile.name)}</h2>
+        <p>Emplacement reserve pour une future application Forge2M.</p>
+      </div>
+      <div class="tile-actions">
+        <button class="secondary" disabled type="button">Bientot</button>
       </div>
     </article>
   `;
