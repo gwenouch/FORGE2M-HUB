@@ -2,6 +2,7 @@ const state = {
   session: null,
   apps: [],
   plans: [],
+  activeSuite: null,
   loading: true,
   error: "",
 };
@@ -18,8 +19,12 @@ const appRoot = document.getElementById("app");
 
 const appSections = [
   {
+    id: "industrial",
     title: "Suite industrielle",
+    shortTitle: "Industriel",
     description: "Production, coupe, qualite et pilotage atelier.",
+    intro: "Applications de production, coupe plasma, atelier et performance industrielle.",
+    theme: "industrial",
     apps: ["redkerf"],
     placeholders: [
       { name: "Suivi production", icon: "SP", label: "Plus tard" },
@@ -30,8 +35,12 @@ const appSections = [
     ],
   },
   {
+    id: "travel",
     title: "Voyages & loisirs",
-    description: "Outils vendables pour organiser les projets hors atelier.",
+    shortTitle: "Voyages",
+    description: "Guides, itineraires et carnets pour vendre des experiences mieux preparees.",
+    intro: "Une suite plus claire pour les outils de voyage, de planification et de loisirs.",
+    theme: "travel",
     apps: [],
     placeholders: [
       { name: "Guide voyage", icon: "GV", label: "A venir" },
@@ -40,8 +49,12 @@ const appSections = [
     ],
   },
   {
+    id: "lab",
     title: "Laboratoire Forge2M",
+    shortTitle: "Laboratoire",
     description: "Idees et modules qui pourront devenir des produits.",
+    intro: "Espace d'essai pour les outils experimentaux et les futures branches produit.",
+    theme: "lab",
     apps: [],
     placeholders: [
       { name: "Scan 3D", icon: "3D", label: "Concept" },
@@ -132,7 +145,7 @@ function shell(content, options = {}) {
         </span>
         <span>
           <strong>Forge2M Apps</strong>
-          <small>Suite industrielle</small>
+          <small>Portail applicatif</small>
         </span>
       </button>
       <nav>${nav}</nav>
@@ -154,7 +167,22 @@ function bindGlobalActions() {
       state.session = null;
       state.apps = [];
       state.plans = [];
+      state.activeSuite = null;
       navigate("/");
+    });
+  });
+
+  document.querySelectorAll("[data-suite]").forEach((element) => {
+    element.addEventListener("click", () => {
+      state.activeSuite = element.dataset.suite;
+      render();
+    });
+  });
+
+  document.querySelectorAll("[data-action='change-suite']").forEach((element) => {
+    element.addEventListener("click", () => {
+      state.activeSuite = null;
+      render();
     });
   });
 }
@@ -279,21 +307,82 @@ function renderDashboard() {
   if (!requireSession()) return;
 
   const user = state.session.user;
-  const sections = renderDashboardSections(state.apps);
+  const activeSection = appSections.find((section) => section.id === state.activeSuite);
+  if (!activeSection) {
+    shell(renderSuitePicker(user), { wide: true });
+    return;
+  }
+
+  const suite = renderSuiteWorkspace(activeSection, state.apps, user);
   shell(`
-    <section class="dashboard-hero">
-      <div>
-        <span class="eyebrow">Launcher Forge2M</span>
-        <h1>Bonjour ${escapeHtml(user.name)}</h1>
-        <p>Ouvrez vos applications actives et gardez les prochains produits en vue.</p>
+    ${suite}
+  `, { wide: true });
+}
+
+function renderSuitePicker(user) {
+  return `
+    <section class="suite-picker">
+      <div class="suite-picker-head">
+        <span class="eyebrow">Portail Forge2M</span>
+        <h1>Bienvenu ${escapeHtml(user.name)}</h1>
+        <p>Choisissez une suite pour ouvrir un univers d'applications.</p>
       </div>
-      <div class="plan-pill">
-        <span>Forfait actif</span>
-        <strong>${escapeHtml(state.session.organization.planName)}</strong>
+      <div class="suite-choice-grid">
+        ${appSections.map(renderSuiteChoice).join("")}
       </div>
     </section>
-    ${sections}
-  `, { wide: true });
+  `;
+}
+
+function renderSuiteChoice(section) {
+  return `
+    <button class="suite-choice suite-choice-${escapeHtml(section.theme)}" data-suite="${escapeHtml(section.id)}" type="button">
+      <span class="suite-choice-kicker">${escapeHtml(section.shortTitle)}</span>
+      <strong>${escapeHtml(section.title)}</strong>
+      <small>${escapeHtml(section.intro)}</small>
+    </button>
+  `;
+}
+
+function renderSuiteWorkspace(section, apps, user) {
+  const appBySlug = new Map(apps.map((app) => [app.slug, app]));
+  const realApps = section.apps
+    .map((slug) => appBySlug.get(slug))
+    .filter(Boolean)
+    .map(renderAppTile)
+    .join("");
+  const placeholders = section.placeholders.map(renderEmptyTile).join("");
+
+  return `
+    <section class="suite-workspace suite-${escapeHtml(section.theme)}">
+      <div class="suite-hero">
+        <div>
+          <span class="eyebrow">${escapeHtml(section.title)}</span>
+          <h1>Bienvenu ${escapeHtml(user.name)}</h1>
+          <p>${escapeHtml(section.intro)}</p>
+        </div>
+        <div class="suite-actions">
+          <div class="plan-pill">
+            <span>Forfait actif</span>
+            <strong>${escapeHtml(state.session.organization.planName)}</strong>
+          </div>
+          <button class="secondary" data-action="change-suite" type="button">Changer de suite</button>
+        </div>
+      </div>
+      <div class="suite-board">
+        <div class="section-title-row">
+          <div>
+            <span class="eyebrow">${escapeHtml(section.shortTitle)}</span>
+            <p>${escapeHtml(section.description)}</p>
+          </div>
+        </div>
+        <div class="launcher-grid">
+          ${realApps}
+          ${placeholders}
+        </div>
+      </div>
+    </section>
+  `;
 }
 
 function renderDashboardSections(apps) {

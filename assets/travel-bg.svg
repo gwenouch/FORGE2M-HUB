@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 700" role="img" aria-label="Fond voyage">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#d8f2ff"/>
+      <stop offset="0.48" stop-color="#ffe6bd"/>
+      <stop offset="1" stop-color="#ffb48a"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#6fd5df"/>
+      <stop offset="1" stop-color="#3f9faf"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="700" fill="url(#sky)"/>
+  <circle cx="1100" cy="165" r="78" fill="#ffbf67" opacity="0.95"/>
+  <path d="M0 430 C180 360 320 405 485 340 C650 275 760 365 930 315 C1100 265 1230 330 1400 270 L1400 700 L0 700 Z" fill="#f6d4a2" opacity="0.78"/>
+  <path d="M0 500 C160 445 310 485 470 430 C640 370 760 455 950 405 C1120 360 1250 415 1400 360 L1400 700 L0 700 Z" fill="url(#sea)" opacity="0.88"/>
+  <path d="M0 570 C220 520 390 600 600 545 C790 495 940 585 1140 530 C1260 498 1330 520 1400 505 L1400 700 L0 700 Z" fill="#fff7df" opacity="0.42"/>
+  <g fill="none" stroke="#ffffff" stroke-width="5" opacity="0.75">
+    <path d="M190 180 q35 -32 70 0"/>
+    <path d="M240 225 q42 -36 84 0"/>
+    <path d="M985 255 q32 -28 64 0"/>
+  </g>
+</svg>
