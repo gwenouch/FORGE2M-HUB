@@ -10,9 +10,13 @@
     />
     <script>
       (() => {
-        const shellVersion = "20260708-hub12";
+        const shellVersion = "20260708-hub13";
         const versionKey = "forge2m-hub-shell-version";
         const reloadKey = "forge2m-hub-shell-reloaded";
+        const style = document.createElement("link");
+        style.rel = "stylesheet";
+        style.href = `/src/styles.css?v=${shellVersion}`;
+        document.head.appendChild(style);
         try {
           const previousVersion = localStorage.getItem(versionKey);
           if (previousVersion === shellVersion) {
@@ -42,7 +46,6 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="/src/styles.css?v=20260708-hub9" />
   </head>
   <body>
     <div id="app" class="app-shell">
@@ -51,6 +54,9 @@
         <p>Chargement Forge2M Apps...</p>
       </div>
     </div>
-    <script type="module" src="/src/app.js?v=20260708-hub9"></script>
+    <script type="module">
+      const shellVersion = "20260708-hub12";
+      import(`/src/app.js?v=${shellVersion}`);
+    </script>
   </body>
 </html>
