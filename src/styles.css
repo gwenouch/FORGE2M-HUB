@@ -152,12 +152,12 @@ button:disabled {
 }
 
 .topbar-slim {
-  --topbar-h: 48px;
-  --topbar-gif-size: 200px;
+  --topbar-h: 100px;
+  --topbar-gif-size: 100px;
   height: var(--topbar-h);
   min-height: var(--topbar-h);
   max-height: var(--topbar-h);
-  overflow: visible;
+  overflow: hidden;
 }
 
 .topbar-slim .topbar-row,
@@ -165,25 +165,25 @@ button:disabled {
   height: var(--topbar-h);
   min-height: var(--topbar-h);
   max-height: var(--topbar-h);
-  padding: 0 12px 0 calc(var(--topbar-gif-size) + 14px);
+  padding: 0 12px;
   flex-wrap: nowrap;
   align-items: center;
-  gap: 8px;
-  position: relative;
+  gap: 10px;
 }
 
 .topbar-slim .brand-gif-brand {
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
   width: var(--topbar-gif-size);
   height: var(--topbar-gif-size);
-  flex: none;
+  flex: 0 0 var(--topbar-gif-size);
   margin: 0;
   padding: 0;
-  z-index: 30;
-  overflow: visible;
+  z-index: 1;
+  overflow: hidden;
+  align-self: center;
 }
 
 .topbar-slim .brand-gif-wrap {
@@ -465,7 +465,7 @@ button:disabled {
 
 .app-shell:has(.topbar-slim) .main,
 .app-shell:has(.topbar-slim) .main.wide {
-  padding-top: calc(var(--topbar-gif-size) * 0.52 + 12px);
+  padding-top: 24px;
 }
 
 .main.wide {
@@ -1742,13 +1742,14 @@ input:focus {
   }
 
   .topbar-slim {
-    --topbar-h: 44px;
-    --topbar-gif-size: 160px;
+    --topbar-h: 80px;
+    --topbar-gif-size: 80px;
   }
 
   .topbar-slim .topbar-row,
   .topbar-row-slim {
-    padding-left: calc(var(--topbar-gif-size) + 10px);
+    padding-left: 10px;
+    padding-right: 10px;
     padding-top: 0;
     padding-bottom: 0;
     flex-wrap: nowrap;
@@ -1770,7 +1771,7 @@ input:focus {
 
   .app-shell:has(.topbar-slim) .main,
   .app-shell:has(.topbar-slim) .main.wide {
-    padding-top: calc(var(--topbar-gif-size) * 0.5 + 10px);
+    padding-top: 20px;
   }
 
   .topbar-slogan,

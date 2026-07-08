@@ -313,7 +313,7 @@ function renderTopbarBrand({ logged, compact }) {
   return `
     <button class="brand brand-gif-brand${compact ? " brand-gif-brand-compact" : ""}" data-route="${route}" aria-label="Accueil Forge2M">
       <span class="brand-logo-wrap brand-gif-wrap">
-        <img src="/assets/forge2m.gif?v=hub31" alt="Forge2M" class="brand-logo brand-gif" loading="eager" decoding="async" />
+        <img src="/assets/forge2m.gif?v=hub32" alt="Forge2M" class="brand-logo brand-gif" loading="eager" decoding="async" />
       </span>
       ${copy}
     </button>
