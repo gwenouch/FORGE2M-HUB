@@ -1693,15 +1693,20 @@ input:focus {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0 28px;
   border-right: 1px solid rgba(255, 138, 61, 0.22);
   background: linear-gradient(180deg, rgba(255, 122, 61, 0.22), rgba(255, 122, 61, 0.08));
-  color: #ffd1b1;
   font-size: 0.92rem;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  white-space: nowrap;
+  line-height: 1;
+}
+
+.promo-ticker-badge-logo {
+  height: 1em;
+  width: auto;
+  display: block;
+  border-radius: 4px;
+  object-fit: contain;
 }
 
 .promo-ticker-viewport {

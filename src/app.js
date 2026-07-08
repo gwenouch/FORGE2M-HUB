@@ -456,7 +456,9 @@ function renderPromoTicker() {
   const loop = `${items}${items}`;
   return `
     <aside class="promo-ticker" aria-label="Annonces applications Forge2M">
-      <div class="promo-ticker-badge">Forge2M</div>
+      <div class="promo-ticker-badge">
+        <img src="/assets/forge2m-logo.jpg" alt="Forge2M" class="promo-ticker-badge-logo" />
+      </div>
       <div class="promo-ticker-viewport">
         <div class="promo-ticker-track">${loop}</div>
       </div>
