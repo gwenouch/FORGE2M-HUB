@@ -677,7 +677,7 @@ function renderAppTile(app) {
     : `<span class="tile-fallback">${escapeHtml(app.iconText)}</span>`;
 
   const launchAttrs = app.access.allowed
-    ? `href="${escapeHtml(launchHref)}" aria-label="Lancer ${escapeHtml(app.name)}"`
+    ? `href="${escapeHtml(launchHref)}" target="_blank" rel="noopener noreferrer" aria-label="Lancer ${escapeHtml(app.name)} (nouvel onglet)"`
     : `href="/apps/${escapeHtml(app.slug)}" data-route="/apps/${escapeHtml(app.slug)}" aria-label="Voir ${escapeHtml(app.name)}"`;
 
   return `
@@ -733,7 +733,7 @@ function renderAppDetailPage(app, options = {}) {
   const launchLabel = allowed ? `Lancer ${app.name}` : "Voir les forfaits";
   const launchClass = allowed ? "primary app-detail-cta-launch" : "primary";
   const launchAttrs = allowed
-    ? `href="${escapeHtml(launchHref)}"`
+    ? `href="${escapeHtml(launchHref)}" target="_blank" rel="noopener noreferrer"`
     : `href="/plans" data-route="/plans"`;
 
   return `
