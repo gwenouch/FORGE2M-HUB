@@ -325,7 +325,7 @@ function renderSuitePicker(user) {
       <div class="suite-picker-head">
         <span class="eyebrow">Portail Forge2M</span>
         <h1>Bienvenu ${escapeHtml(user.name)}</h1>
-        <p>Choisissez une suite pour ouvrir un univers d'applications.</p>
+        <p>Choisissez votre suite de travail.</p>
       </div>
       <div class="suite-choice-grid">
         ${appSections.map(renderSuiteChoice).join("")}
@@ -355,10 +355,17 @@ function renderSuiteWorkspace(section, apps, user) {
 
   return `
     <section class="suite-workspace suite-${escapeHtml(section.theme)}">
+      <div class="suite-topline">
+        <div>
+          <span class="eyebrow">Application principale</span>
+          <strong>RedKerf Pro</strong>
+        </div>
+        <button class="secondary" data-action="change-suite" type="button">Changer de suite</button>
+      </div>
       <div class="suite-hero">
         <div>
           <span class="eyebrow">${escapeHtml(section.title)}</span>
-          <h1>Bienvenu ${escapeHtml(user.name)}</h1>
+          <h1>${escapeHtml(section.title)}</h1>
           <p>${escapeHtml(section.intro)}</p>
         </div>
         <div class="suite-actions">
@@ -366,7 +373,6 @@ function renderSuiteWorkspace(section, apps, user) {
             <span>Forfait actif</span>
             <strong>${escapeHtml(state.session.organization.planName)}</strong>
           </div>
-          <button class="secondary" data-action="change-suite" type="button">Changer de suite</button>
         </div>
       </div>
       <div class="suite-board">
@@ -419,10 +425,16 @@ function renderAppTile(app) {
   const statusClass = app.access.allowed ? "available" : "locked";
   const action = app.access.allowed
     ? `<a class="primary" href="/api/launch/${encodeURIComponent(app.slug)}">Ouvrir</a>`
-    : `<button class="secondary" data-route="/apps/${escapeHtml(app.slug)}">Decouvrir</button>`;
-  const badge = app.promotion
+    : `<button class="secondary unlock" data-route="/apps/${escapeHtml(app.slug)}">S'abonner</button>`;
+  const promoBadge = app.promotion
     ? `<span class="badge promo">${escapeHtml(app.promotion.badgeText)}</span>`
-    : `<span class="badge ${statusClass}">${app.access.allowed ? "Actif" : "Non inclus"}</span>`;
+    : "";
+  const badge = `
+    ${promoBadge}
+    <span class="badge ${statusClass}">
+      ${app.access.allowed ? "Inclus forfait" : "A debloquer"}
+    </span>
+  `;
   const media = app.image
     ? `<img src="${escapeHtml(app.image)}" alt="${escapeHtml(app.name)}" />`
     : `<span>${escapeHtml(app.iconText)}</span>`;
@@ -455,7 +467,7 @@ function renderEmptyTile(tile) {
         <p>Emplacement reserve pour une future application Forge2M.</p>
       </div>
       <div class="tile-actions">
-        <button class="secondary" disabled type="button">Bientot</button>
+        <button class="secondary unlock" data-route="/plans" type="button">Voir packs</button>
       </div>
     </article>
   `;
