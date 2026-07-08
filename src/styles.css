@@ -135,44 +135,52 @@ button:disabled {
   border-bottom: 1px solid var(--line);
   background: rgba(8, 11, 13, 0.82);
   backdrop-filter: blur(18px);
+  overflow: visible;
 }
 
 .topbar-row {
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 12px;
   padding: 12px 28px;
 }
 
 .topbar-row:has(.topbar-nav-unified),
 .topbar-row:has(.user-pill) {
-  align-items: stretch;
+  align-items: center;
 }
 
 .topbar-row:has(.brand-gif-brand) {
-  --topbar-gif-size: clamp(208px, 22vw, 296px);
+  --topbar-band-h: 3.5rem;
+  --topbar-gif-base: 9.25rem;
+  --topbar-gif-scale: 2;
+  --topbar-gif-visual: calc(var(--topbar-gif-base) * var(--topbar-gif-scale));
+  height: var(--topbar-band-h);
+  min-height: var(--topbar-band-h);
+  max-height: var(--topbar-band-h);
+  padding: 0 12px;
+  gap: 8px;
+  overflow: visible;
   align-items: center;
-  gap: 10px;
-  padding: 7px 16px;
-  min-height: calc(var(--topbar-gif-size) + 13px);
 }
 
 .topbar-row-single {
-  gap: 10px;
-  padding: 7px 16px;
+  gap: 8px;
+  padding: 0 12px;
   flex-wrap: nowrap;
   align-items: center;
 }
 
 .brand-gif-brand {
+  position: relative;
   align-self: center;
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-  flex: 0 0 auto;
+  display: block;
+  flex: 0 0 var(--topbar-gif-visual, 18.5rem);
+  width: var(--topbar-gif-visual, 18.5rem);
+  height: var(--topbar-band-h, 3.5rem);
   padding: 0;
-  height: var(--topbar-gif-size, 120px);
+  overflow: visible;
 }
 
 .brand-gif-brand-compact {
@@ -180,12 +188,14 @@ button:disabled {
 }
 
 .brand-gif-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: var(--topbar-gif-size, 120px);
-  height: var(--topbar-gif-size, 120px);
+  position: absolute;
+  left: 0;
+  top: 50%;
+  display: block;
+  width: var(--topbar-gif-base, 9.25rem);
+  height: var(--topbar-gif-base, 9.25rem);
+  margin: 0;
+  transform: translateY(-50%);
   border-radius: 12px;
   overflow: visible;
   border: 1px solid var(--line-strong);
@@ -203,6 +213,8 @@ button:disabled {
   object-fit: contain;
   object-position: center;
   pointer-events: none;
+  transform: scale(var(--topbar-gif-scale, 2));
+  transform-origin: left center;
 }
 
 .brand-gif-brand .brand-copy {
@@ -219,8 +231,8 @@ button:disabled {
 }
 
 .topbar-row:has(.topbar-slogan) {
-  padding-top: 7px;
-  padding-bottom: 7px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .topbar-slogan {
@@ -228,13 +240,13 @@ button:disabled {
   flex: 1;
   min-width: 0;
   margin: 0;
-  padding: 0 8px;
+  padding: 0 6px;
   text-align: center;
   font-family: "Cinzel", "Times New Roman", serif;
-  font-size: clamp(0.64rem, 1.04vw, 1.04rem);
+  font-size: clamp(0.58rem, 0.9vw, 0.82rem);
   font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: 0.04em;
+  line-height: 1.1;
+  letter-spacing: 0.03em;
   color: #dce3e9;
   white-space: normal;
   overflow: hidden;
@@ -242,7 +254,7 @@ button:disabled {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
-  transform: perspective(620px) rotateX(8deg) rotateZ(-1.5deg) skewX(-3deg);
+  transform: perspective(620px) rotateX(6deg) rotateZ(-1deg) skewX(-2deg);
   transform-origin: center center;
   transform-style: preserve-3d;
   text-shadow:
@@ -294,7 +306,7 @@ button:disabled {
 }
 
 .topbar-slogan-dashboard {
-  font-size: clamp(0.62rem, 1vw, 0.98rem);
+  font-size: clamp(0.56rem, 0.88vw, 0.8rem);
 }
 
 .topbar-nav-unified {
@@ -442,9 +454,16 @@ button:disabled {
   padding: 36px 0 64px;
 }
 
+.app-shell:has(.brand-gif-brand) .main {
+  padding-top: 7rem;
+}
+
 .main.wide {
   width: min(1360px, calc(100% - 40px));
-  padding-top: 16px;
+}
+
+.app-shell:has(.brand-gif-brand) .main.wide {
+  padding-top: 7rem;
 }
 
 .eyebrow {
@@ -1727,7 +1746,14 @@ input:focus {
   }
 
   .topbar-row:has(.brand-gif-brand) {
-    --topbar-gif-size: 123px;
+    --topbar-band-h: 3rem;
+    --topbar-gif-base: 5.5rem;
+    --topbar-gif-scale: 2;
+  }
+
+  .app-shell:has(.brand-gif-brand) .main,
+  .app-shell:has(.brand-gif-brand) .main.wide {
+    padding-top: 5rem;
   }
 
   .topbar-slogan,
