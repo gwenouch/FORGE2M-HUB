@@ -50,6 +50,29 @@ const appSections = [
   },
 ];
 
+const tickerAds = [
+  {
+    slug: "redkerf",
+    name: "RedKerf",
+    logo: "/assets/redkerf-logo.jpg",
+    icon: "RK",
+    price: "79 $/mois",
+    pitch: "Gagnez des heures sur chaque programme plasma : DXF, imbrication, simulation et G-code pret machine.",
+    theme: "industrial",
+    route: "/apps/redkerf",
+  },
+  {
+    slug: "parcours2m",
+    name: "Parcours2M",
+    logo: "/assets/parcours2m-logo.jpg",
+    icon: "P2M",
+    price: "Lancement prochain",
+    pitch: "Vendez des voyages mieux prepares : itineraires, budgets, lieux et guides prets a partager.",
+    theme: "travel",
+    route: "/apps/parcours2m",
+  },
+];
+
 function qs(selector, root = document) {
   return root.querySelector(selector);
 }
@@ -146,14 +169,50 @@ function shell(content, options = {}) {
       <nav>${nav}</nav>
     </header>
     <main class="${options.wide ? "main wide" : "main"}">${content}</main>
+    ${renderPromoTicker()}
   `;
 
   bindGlobalActions();
 }
 
+function renderPromoTickerItem(ad) {
+  return `
+    <a class="promo-ticker-item promo-ticker-item-${escapeHtml(ad.theme)}" href="${escapeHtml(ad.route)}" data-route="${escapeHtml(ad.route)}">
+      <span class="promo-ticker-logo">
+        <img src="${escapeHtml(ad.logo)}" alt="" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false" />
+        <span class="promo-ticker-fallback" hidden>${escapeHtml(ad.icon)}</span>
+      </span>
+      <span class="promo-ticker-copy">
+        <strong>${escapeHtml(ad.name)}</strong>
+        <span>${escapeHtml(ad.pitch)}</span>
+      </span>
+      <span class="promo-ticker-price">${escapeHtml(ad.price)}</span>
+    </a>
+    <span class="promo-ticker-sep" aria-hidden="true">◆</span>
+  `;
+}
+
+function renderPromoTicker() {
+  const items = tickerAds.map(renderPromoTickerItem).join("");
+  const loop = `${items}${items}`;
+  return `
+    <aside class="promo-ticker" aria-label="Annonces applications Forge2M">
+      <div class="promo-ticker-badge">Forge2M</div>
+      <div class="promo-ticker-viewport">
+        <div class="promo-ticker-track">${loop}</div>
+      </div>
+    </aside>
+  `;
+}
+
 function bindGlobalActions() {
   document.querySelectorAll("[data-route]").forEach((element) => {
-    element.addEventListener("click", () => navigate(element.dataset.route));
+    element.addEventListener("click", (event) => {
+      if (element.tagName === "A") {
+        event.preventDefault();
+      }
+      navigate(element.dataset.route);
+    });
   });
 
   document.querySelectorAll("[data-action='logout']").forEach((element) => {
