@@ -22,7 +22,7 @@ export function getApps(env = {}) {
       longDescription:
         "RedKerf centralise la preparation de coupe plasma : import DXF, optimisation, ordre de coupe, simulation et generation G-code.",
       iconText: "RK",
-      image: "/assets/redkerf-icon.png",
+      image: "/assets/redkerf-logo.jpg",
       status: "active",
       isActive: true,
       url: env.REDKERF_URL || "https://redkerf.forge2m.com",
