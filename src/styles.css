@@ -252,7 +252,7 @@ button:disabled {
   padding: 0 6px;
   text-align: center;
   font-family: "Cinzel", "Times New Roman", serif;
-  font-size: clamp(0.58rem, 0.9vw, 0.82rem);
+  font-size: clamp(1.16rem, 1.8vw, 1.64rem);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: 0.03em;
@@ -315,7 +315,7 @@ button:disabled {
 }
 
 .topbar-slogan-dashboard {
-  font-size: clamp(0.56rem, 0.88vw, 0.8rem);
+  font-size: clamp(1.12rem, 1.76vw, 1.6rem);
 }
 
 .topbar-nav-unified {
@@ -1764,7 +1764,7 @@ input:focus {
   .topbar-slim .topbar-slogan-dashboard {
     order: 0;
     flex-basis: auto;
-    font-size: 0.52rem;
+    font-size: 1.04rem;
     -webkit-line-clamp: 1;
     line-clamp: 1;
   }
@@ -1780,7 +1780,7 @@ input:focus {
     flex-basis: 100%;
     text-align: center;
     padding: 0;
-    font-size: 0.68rem;
+    font-size: 1.36rem;
     white-space: normal;
     transform: perspective(520px) rotateX(6deg) rotateZ(-1deg) skewX(-2deg);
     -webkit-line-clamp: 3;
