@@ -7,8 +7,9 @@ const state = {
   error: "",
 };
 
-const FORGE2M_SLOGAN_TAGLINE = "Un portail, un lien : l'atelier et le chemin.";
-const FORGE2M_SLOGAN_HIGHLIGHT = "l'atelier et le chemin";
+const FORGE2M_SLOGAN_TAGLINE =
+  "un marteau visible, un seul qui frappe les deux montagnes — un portail, un lien.";
+const FORGE2M_SLOGAN_HIGHLIGHT = "un seul qui frappe les deux montagnes";
 
 const routes = {
   "/": renderHome,
@@ -292,7 +293,7 @@ function renderTopbarSlogan(className = "topbar-slogan") {
   return `
     <p class="${className}" aria-label="Slogan Forge2M">
       <span class="topbar-slogan-brand">Forge2M</span>
-      <span class="topbar-slogan-text"> — ${tagline}.</span>
+      <span class="topbar-slogan-text"> — ${tagline}</span>
     </p>
   `;
 }
