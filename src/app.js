@@ -26,13 +26,7 @@ const appSections = [
     intro: "Applications de production, coupe plasma, atelier et performance industrielle.",
     theme: "industrial",
     apps: ["redkerf"],
-    placeholders: [
-      { name: "Suivi production", icon: "SP", label: "Plus tard" },
-      { name: "Pareto defauts", icon: "PD", label: "Plus tard" },
-      { name: "Maintenance", icon: "MT", label: "Plus tard" },
-      { name: "Qualite", icon: "QL", label: "Plus tard" },
-      { name: "Planning atelier", icon: "PA", label: "Plus tard" },
-    ],
+    placeholders: [],
   },
   {
     id: "travel",
@@ -42,11 +36,7 @@ const appSections = [
     intro: "Une suite plus claire pour les outils de voyage, de planification et de loisirs.",
     theme: "travel",
     apps: ["parcours2m"],
-    placeholders: [
-      { name: "Planificateur sejour", icon: "PS", label: "A venir" },
-      { name: "Carnet de route", icon: "CR", label: "A venir" },
-      { name: "Goodies voyage", icon: "GV", label: "A venir" },
-    ],
+    placeholders: [],
   },
   {
     id: "lab",
@@ -56,11 +46,7 @@ const appSections = [
     intro: "Espace d'essai pour les outils experimentaux et les futures branches produit.",
     theme: "lab",
     apps: [],
-    placeholders: [
-      { name: "Scan 3D", icon: "3D", label: "Concept" },
-      { name: "Estimateur projet", icon: "EP", label: "Concept" },
-      { name: "Assistant atelier", icon: "AA", label: "Concept" },
-    ],
+    placeholders: [],
   },
 ];
 
@@ -238,16 +224,6 @@ function renderHome() {
             <strong>Parcours2M</strong>
             <small>Voyages &amp; itineraires</small>
           </article>
-          <article class="mini-card locked">
-            <span class="mini-icon">+</span>
-            <strong>Prochaines apps</strong>
-            <small>Laboratoire Forge2M</small>
-          </article>
-          <article class="mini-card locked">
-            <span class="mini-icon">F</span>
-            <strong>Forfaits</strong>
-            <small>Abonnements centralises</small>
-          </article>
         </div>
       </div>
     </section>
@@ -384,10 +360,12 @@ function renderSuitePicker(user) {
 
 function renderSuiteChoice(section) {
   const appCount = section.apps.length;
-  const futureCount = section.placeholders.length;
+  const countLabel = appCount
+    ? `${appCount} application${appCount > 1 ? "s" : ""}`
+    : "Bientot disponible";
   return `
     <button class="suite-choice suite-choice-${escapeHtml(section.theme)}" data-suite="${escapeHtml(section.id)}" type="button">
-      <span class="suite-choice-count">${appCount} active${appCount > 1 ? "s" : ""} · ${futureCount} a venir</span>
+      <span class="suite-choice-count">${countLabel}</span>
       <span class="suite-choice-kicker">${escapeHtml(section.shortTitle)}</span>
       <strong>${escapeHtml(section.title)}</strong>
       <small>${escapeHtml(section.intro)}</small>
@@ -402,8 +380,8 @@ function renderSuiteWorkspace(section, apps, user) {
     .filter(Boolean)
     .map(renderAppTile)
     .join("");
-  const placeholders = section.placeholders.map(renderEmptyTile).join("");
   const planName = state.session?.organization?.planName || "Forfait actif";
+  const tilesMarkup = realApps || `<p class="suite-empty">Aucune application disponible dans cette suite pour le moment.</p>`;
 
   return `
     <section class="suite-workspace suite-${escapeHtml(section.theme)}">
@@ -435,8 +413,7 @@ function renderSuiteWorkspace(section, apps, user) {
           </div>
         </div>
         <div class="launcher-grid">
-          ${realApps}
-          ${placeholders}
+          ${tilesMarkup}
         </div>
       </div>
     </section>

@@ -802,6 +802,17 @@ input:focus {
   background: rgba(14, 19, 23, 0.72);
 }
 
+.suite-empty {
+  margin: 0;
+  padding: 28px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  text-align: center;
+  font-weight: 600;
+  grid-column: 1 / -1;
+}
+
 .section-title-row {
   display: flex;
   align-items: flex-end;
