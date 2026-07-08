@@ -8,8 +8,9 @@ const state = {
 };
 
 const FORGE2M_SLOGAN_TAGLINE =
-  "un marteau visible, un seul coup sur les monts : un portail, un chemin.";
-const FORGE2M_SLOGAN_HIGHLIGHT = "un seul coup sur les monts";
+  "un marteau arrivant du ciel, un coup sur les monts et ce portail deviendra ton chemin.";
+const FORGE2M_SLOGAN_HIGHLIGHT =
+  "un coup sur les monts et ce portail deviendra ton chemin";
 
 const routes = {
   "/": renderHome,
