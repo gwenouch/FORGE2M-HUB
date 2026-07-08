@@ -131,11 +131,20 @@ async function bootstrap() {
 
 function shell(content, options = {}) {
   const logged = Boolean(state.session?.authenticated);
+  const path = currentPath();
+  const user = state.session?.user;
   const nav = logged
-    ? `<button class="nav-link" data-route="/dashboard">Dashboard</button>
-       <button class="nav-link" data-route="/plans">Forfaits</button>
+    ? `<div class="user-pill" aria-label="Compte connecte">
+         <span class="user-pill-avatar">${escapeHtml((user?.name || "F2M").slice(0, 2).toUpperCase())}</span>
+         <span>
+           <strong>${escapeHtml(user?.name || "Forge2M")}</strong>
+           <small>${escapeHtml(state.session?.organization?.planName || "Forfait actif")}</small>
+         </span>
+       </div>
+       <button class="nav-link${path === "/dashboard" ? " is-active" : ""}" data-route="/dashboard">Dashboard</button>
+       <button class="nav-link${path === "/plans" ? " is-active" : ""}" data-route="/plans">Forfaits</button>
        <button class="nav-link ghost" data-action="logout">Deconnexion</button>`
-    : `<button class="nav-link" data-route="/login">Connexion</button>`;
+    : `<button class="nav-link${path === "/login" ? " is-active" : ""}" data-route="/login">Connexion</button>`;
 
   appRoot.innerHTML = `
     <header class="topbar">
@@ -192,14 +201,28 @@ function renderHome() {
     <section class="hero">
       <div class="hero-copy">
         <span class="eyebrow">Plateforme Forge2M</span>
-        <h1>Un seul acces pour vos applications industrielles.</h1>
+        <h1>Toutes vos applications, un seul portail.</h1>
         <p>
-          RedKerf devient la premiere application de la suite Forge2M.
-          Le hub reste pret pour ajouter les autres outils quand tu me diras de les brancher.
+          Lancez RedKerf, Parcours2M et les futurs outils Forge2M depuis un hub unique.
+          Gerez vos forfaits et ouvrez chaque application en un clic.
         </p>
         <div class="hero-actions">
           <button class="primary" data-route="/login">Se connecter</button>
-          <button class="secondary" data-route="/plans">Voir le forfait</button>
+          <button class="secondary" data-route="/plans">Voir les forfaits</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong>2</strong>
+            <span>Applications en catalogue</span>
+          </div>
+          <div class="hero-stat">
+            <strong>3</strong>
+            <span>Suites produit</span>
+          </div>
+          <div class="hero-stat">
+            <strong>1</strong>
+            <span>Forfait disponible</span>
+          </div>
         </div>
       </div>
       <div class="hero-panel" aria-label="Apercu dashboard">
@@ -208,12 +231,22 @@ function renderHome() {
           <article class="mini-card active">
             <span class="mini-icon">RK</span>
             <strong>RedKerf</strong>
-            <small>Application active</small>
+            <small>Coupe plasma &amp; G-code</small>
+          </article>
+          <article class="mini-card active">
+            <span class="mini-icon">P2</span>
+            <strong>Parcours2M</strong>
+            <small>Voyages &amp; itineraires</small>
           </article>
           <article class="mini-card locked">
             <span class="mini-icon">+</span>
-            <strong>Prochaine app</strong>
-            <small>Ajout plus tard</small>
+            <strong>Prochaines apps</strong>
+            <small>Laboratoire Forge2M</small>
+          </article>
+          <article class="mini-card locked">
+            <span class="mini-icon">F</span>
+            <strong>Forfaits</strong>
+            <small>Abonnements centralises</small>
           </article>
         </div>
       </div>
@@ -225,23 +258,35 @@ function renderLogin() {
   const params = new URLSearchParams(window.location.search);
   const next = params.get("next") || "/dashboard";
   shell(`
-    <section class="auth-card">
-      <span class="eyebrow">Acces client</span>
-      <h1>Connexion</h1>
-      <p>Connectez-vous au hub Forge2M pour ouvrir les applications autorisees.</p>
-      <form id="loginForm" class="form-grid">
-        <label>
-          Login
-          <input name="login" autocomplete="username" required />
-        </label>
-        <label>
-          Code
-          <input name="code" type="password" autocomplete="current-password" required />
-        </label>
-        <button class="primary" type="submit">Entrer</button>
-        <p id="loginMessage" class="form-message"></p>
-      </form>
-      <button class="text-button" data-route="/register">Demander un acces</button>
+    <section class="auth-layout">
+      <div class="auth-showcase">
+        <span class="eyebrow">Forge2M Apps</span>
+        <h2>Votre espace client pour lancer les applications autorisees.</h2>
+        <p>Un seul login pour acceder a RedKerf, Parcours2M et les prochains outils de la suite.</p>
+        <ul>
+          <li>Lancement direct des applications incluses dans votre forfait</li>
+          <li>Gestion centralisee des abonnements</li>
+          <li>Portail pret pour de nouvelles suites produit</li>
+        </ul>
+      </div>
+      <section class="auth-card">
+        <span class="eyebrow">Acces client</span>
+        <h1>Connexion</h1>
+        <p>Connectez-vous au hub Forge2M pour ouvrir les applications autorisees.</p>
+        <form id="loginForm" class="form-grid">
+          <label>
+            Login
+            <input name="login" autocomplete="username" required />
+          </label>
+          <label>
+            Code
+            <input name="code" type="password" autocomplete="current-password" required />
+          </label>
+          <button class="primary" type="submit">Entrer</button>
+          <p id="loginMessage" class="form-message"></p>
+        </form>
+        <button class="text-button" data-route="/register">Demander un acces</button>
+      </section>
     </section>
   `);
 
@@ -323,9 +368,12 @@ function renderSuitePicker(user) {
   return `
     <section class="suite-picker">
       <div class="suite-picker-head">
-        <span class="eyebrow">Portail Forge2M</span>
-        <h1>Bienvenu ${escapeHtml(user.name)}</h1>
-        <p>Choisissez votre suite de travail.</p>
+        <div>
+          <span class="eyebrow">Portail Forge2M</span>
+          <h1>Bonjour ${escapeHtml(user.name)}</h1>
+          <p>Choisissez une suite pour acceder a vos applications et outils.</p>
+        </div>
+        <button class="secondary" data-route="/plans" type="button">Gerer mon forfait</button>
       </div>
       <div class="suite-choice-grid">
         ${appSections.map(renderSuiteChoice).join("")}
@@ -335,8 +383,11 @@ function renderSuitePicker(user) {
 }
 
 function renderSuiteChoice(section) {
+  const appCount = section.apps.length;
+  const futureCount = section.placeholders.length;
   return `
     <button class="suite-choice suite-choice-${escapeHtml(section.theme)}" data-suite="${escapeHtml(section.id)}" type="button">
+      <span class="suite-choice-count">${appCount} active${appCount > 1 ? "s" : ""} · ${futureCount} a venir</span>
       <span class="suite-choice-kicker">${escapeHtml(section.shortTitle)}</span>
       <strong>${escapeHtml(section.title)}</strong>
       <small>${escapeHtml(section.intro)}</small>
@@ -352,13 +403,14 @@ function renderSuiteWorkspace(section, apps, user) {
     .map(renderAppTile)
     .join("");
   const placeholders = section.placeholders.map(renderEmptyTile).join("");
+  const planName = state.session?.organization?.planName || "Forfait actif";
 
   return `
     <section class="suite-workspace suite-${escapeHtml(section.theme)}">
       <div class="suite-topline">
         <div>
-          <span class="eyebrow">Application principale</span>
-          <strong>RedKerf Pro</strong>
+          <span class="eyebrow">Espace ${escapeHtml(section.shortTitle)}</span>
+          <strong>${escapeHtml(planName)}</strong>
         </div>
         <button class="secondary" data-action="change-suite" type="button">Changer de suite</button>
       </div>
@@ -371,14 +423,14 @@ function renderSuiteWorkspace(section, apps, user) {
         <div class="suite-actions">
           <div class="plan-pill">
             <span>Forfait actif</span>
-            <strong>${escapeHtml(state.session.organization.planName)}</strong>
+            <strong>${escapeHtml(planName)}</strong>
           </div>
         </div>
       </div>
       <div class="suite-board">
         <div class="section-title-row">
           <div>
-            <span class="eyebrow">${escapeHtml(section.shortTitle)}</span>
+            <span class="eyebrow">Applications</span>
             <p>${escapeHtml(section.description)}</p>
           </div>
         </div>
@@ -536,8 +588,9 @@ function renderPlanGrid() {
     : [
         {
           name: "RedKerf Pro",
-          description: "Acces complet a RedKerf.",
+          description: "Acces complet a RedKerf pour la production plasma.",
           priceMonthly: 79,
+          priceYearly: 790,
           apps: ["RedKerf"],
           isCurrent: false,
         },
@@ -549,14 +602,20 @@ function renderPlanGrid() {
         .map(
           (plan) => `
             <article class="plan-card ${plan.isCurrent ? "current" : ""}">
-              <span class="badge ${plan.isCurrent ? "available" : ""}">
-                ${plan.isCurrent ? "Actuel" : "Disponible"}
+              <span class="badge ${plan.isCurrent ? "available" : "locked"}">
+                ${plan.isCurrent ? "Forfait actuel" : "Disponible"}
               </span>
               <h2>${escapeHtml(plan.name)}</h2>
               <p>${escapeHtml(plan.description)}</p>
-              <strong>${plan.priceMonthly === 0 ? "Gratuit" : `${plan.priceMonthly} CAD / mois`}</strong>
+              <div class="plan-price">
+                ${plan.priceMonthly === 0 ? "Gratuit" : `${plan.priceMonthly} $`}
+                ${plan.priceMonthly > 0 ? "<small>CAD / mois</small>" : ""}
+              </div>
+              ${plan.priceYearly ? `<p style="margin:0;font-size:0.86rem;">ou ${plan.priceYearly} $ CAD / an</p>` : ""}
               <div class="tag-row">${plan.apps.map((app) => `<span>${escapeHtml(app)}</span>`).join("")}</div>
-              <button class="secondary" type="button">Stripe plus tard</button>
+              <button class="${plan.isCurrent ? "secondary" : "primary"}" type="button" disabled>
+                ${plan.isCurrent ? "Forfait actif" : "Stripe bientot disponible"}
+              </button>
             </article>
           `
         )
