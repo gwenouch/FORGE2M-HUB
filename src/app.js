@@ -511,9 +511,10 @@ function renderDashboardSections(apps) {
 
 function renderAppTile(app) {
   const statusClass = app.access.allowed ? "available" : "locked";
-  const action = app.access.allowed
-    ? `<a class="primary" href="/api/launch/${encodeURIComponent(app.slug)}">Ouvrir</a>`
-    : `<button class="secondary unlock" data-route="/apps/${escapeHtml(app.slug)}">S'abonner</button>`;
+  const launchHref = app.access.allowed
+    ? `/api/launch/${encodeURIComponent(app.slug)}`
+    : `/apps/${encodeURIComponent(app.slug)}`;
+  const launchHint = app.access.allowed ? "Cliquer pour lancer" : "Voir les forfaits";
   const promoBadge = app.promotion
     ? `<span class="badge promo">${escapeHtml(app.promotion.badgeText)}</span>`
     : "";
@@ -524,21 +525,27 @@ function renderAppTile(app) {
     </span>
   `;
   const media = app.image
-    ? `<img src="${escapeHtml(app.image)}" alt="${escapeHtml(app.name)}" />`
-    : `<span>${escapeHtml(app.iconText)}</span>`;
+    ? `<img src="${escapeHtml(app.image)}" alt="${escapeHtml(app.name)}" loading="lazy" />`
+    : `<span class="tile-fallback">${escapeHtml(app.iconText)}</span>`;
+
+  const launchAttrs = app.access.allowed
+    ? `href="${escapeHtml(launchHref)}" aria-label="Lancer ${escapeHtml(app.name)}"`
+    : `href="/apps/${escapeHtml(app.slug)}" data-route="/apps/${escapeHtml(app.slug)}" aria-label="Voir ${escapeHtml(app.name)}"`;
 
   return `
-    <article class="app-tile ${statusClass}">
-      <div class="tile-image">${media}</div>
+    <article class="app-tile pad-3d ${statusClass}">
       <div class="tile-content">
         <div class="app-card-top">${badge}</div>
         <h2>${escapeHtml(app.name)}</h2>
         <p>${escapeHtml(app.description)}</p>
       </div>
-      <div class="tile-actions">
-        ${action}
-        <button class="secondary" data-route="/apps/${escapeHtml(app.slug)}">Details</button>
-      </div>
+      <a class="tile-launch${app.access.allowed ? "" : " tile-launch-locked"}" ${launchAttrs}>
+        <span class="tile-logo-stage">
+          <span class="tile-image">${media}</span>
+          <span class="tile-launch-hint">${launchHint}</span>
+        </span>
+      </a>
+      <button class="tile-details-link" data-route="/apps/${escapeHtml(app.slug)}" type="button">Plus d infos</button>
     </article>
   `;
 }
