@@ -568,35 +568,100 @@ function renderEmptyTile(tile) {
   `;
 }
 
+function getTickerAdForSlug(slug) {
+  return tickerAds.find((ad) => ad.slug === slug) || null;
+}
+
+function renderAppLogoMedia(app) {
+  if (app.image) {
+    return `<img src="${escapeHtml(app.image)}" alt="${escapeHtml(app.name)}" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false" /><span class="tile-fallback" hidden>${escapeHtml(app.iconText || "")}</span>`;
+  }
+  return `<span class="tile-fallback">${escapeHtml(app.iconText || "?")}</span>`;
+}
+
+function renderAppDetailPage(app, options = {}) {
+  const promo = getTickerAdForSlug(app.slug);
+  const theme = promo?.theme || "industrial";
+  const pitch = promo?.pitch || app.description || app.longDescription;
+  const price = promo?.price || "";
+  const allowed = options.allowed ?? app.access?.allowed ?? false;
+  const accessReason = options.accessReason || app.access?.reason || "";
+  const blocked = options.blocked === true;
+  const promoBadge = app.promotion
+    ? `<span class="badge promo">${escapeHtml(app.promotion.badgeText)}</span>`
+    : "";
+  const statusBadge = blocked
+    ? `<span class="badge locked">Forfait requis</span>`
+    : `<span class="badge ${allowed ? "available" : "locked"}">${allowed ? "Inclus forfait" : "A debloquer"}</span>`;
+  const tags = (app.tags || [])
+    .map((tag) => `<span>${escapeHtml(tag)}</span>`)
+    .join("");
+  const benefits = (app.benefits || [])
+    .map((item) => `<article class="app-detail-benefit"><span>${escapeHtml(item)}</span></article>`)
+    .join("");
+  const launchHref = allowed ? `/api/launch/${encodeURIComponent(app.slug)}` : "/plans";
+  const launchLabel = allowed ? `Lancer ${app.name}` : "Voir les forfaits";
+  const launchClass = allowed ? "primary app-detail-cta-launch" : "primary";
+  const launchAttrs = allowed
+    ? `href="${escapeHtml(launchHref)}"`
+    : `href="/plans" data-route="/plans"`;
+
+  return `
+    <section class="app-detail-page app-detail-page-${escapeHtml(theme)}">
+      <div class="app-detail-hero">
+        <div class="app-detail-hero-copy">
+          <div class="app-card-top">${promoBadge}${statusBadge}</div>
+          <span class="eyebrow">Application Forge2M</span>
+          <h1>${escapeHtml(app.name)}</h1>
+          <p class="app-detail-pitch">${escapeHtml(pitch)}</p>
+          ${price ? `<div class="app-detail-price">${escapeHtml(price)}</div>` : ""}
+          ${tags ? `<div class="tag-row app-detail-tags">${tags}</div>` : ""}
+        </div>
+        <div class="app-detail-hero-visual">
+          <a class="app-detail-launch tile-launch${allowed ? "" : " tile-launch-locked"}" ${launchAttrs} aria-label="${escapeHtml(launchLabel)}">
+            <span class="tile-logo-stage app-detail-logo-stage">
+              <span class="tile-image app-detail-logo">${renderAppLogoMedia(app)}</span>
+              <span class="tile-launch-hint">${allowed ? "Cliquer pour lancer" : "Voir les forfaits"}</span>
+            </span>
+          </a>
+          <div class="app-detail-access-card">
+            <strong>${allowed ? "Acces autorise" : blocked ? "Acces non inclus" : "Acces bloque"}</strong>
+            <p>${escapeHtml(accessReason || app.longDescription || "")}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-detail-body">
+        <section class="app-detail-about">
+          <span class="eyebrow">Presentation</span>
+          <h2>Ce que fait ${escapeHtml(app.name)}</h2>
+          <p>${escapeHtml(app.longDescription || app.description || "")}</p>
+        </section>
+
+        ${
+          benefits
+            ? `<section class="app-detail-benefits-wrap">
+                <span class="eyebrow">Avantages</span>
+                <h2>Ce que vous gagnez</h2>
+                <div class="app-detail-benefits">${benefits}</div>
+              </section>`
+            : ""
+        }
+
+        <div class="app-detail-actions hero-actions">
+          <a class="${launchClass}" ${launchAttrs}>${escapeHtml(launchLabel)}</a>
+          <button class="secondary" data-route="/dashboard" type="button">Retour dashboard</button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
 async function renderAppDetail(slug) {
   if (!requireSession()) return;
   try {
     const { app } = await api(`/api/apps/${encodeURIComponent(slug)}`);
-    shell(`
-      <section class="detail-layout">
-        <div class="detail-main">
-          <span class="eyebrow">Application</span>
-          <h1>${escapeHtml(app.name)}</h1>
-          <p>${escapeHtml(app.longDescription)}</p>
-          <div class="benefits">
-            ${app.benefits.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
-          </div>
-          <div class="hero-actions">
-            ${
-              app.access.allowed
-                ? `<a class="primary" href="/api/launch/${encodeURIComponent(app.slug)}">Ouvrir ${escapeHtml(app.name)}</a>`
-                : `<button class="primary" data-route="/plans">Changer de forfait</button>`
-            }
-            <button class="secondary" data-route="/dashboard">Retour dashboard</button>
-          </div>
-        </div>
-        <aside class="detail-side">
-          <span class="app-icon large">${escapeHtml(app.iconText)}</span>
-          <strong>${app.access.allowed ? "Acces autorise" : "Acces bloque"}</strong>
-          <p>${escapeHtml(app.access.reason)}</p>
-        </aside>
-      </section>
-    `, { wide: true });
+    shell(renderAppDetailPage(app), { wide: true });
   } catch (error) {
     shell(`<section class="empty-state"><h1>Application introuvable</h1><p>${escapeHtml(error.message)}</p></section>`);
   }
@@ -669,19 +734,18 @@ function renderPlanGrid() {
 
 function renderNotIncluded(slug) {
   const app = state.apps.find((item) => item.slug === slug);
-  shell(`
-    <section class="detail-layout">
-      <div class="detail-main">
-        <span class="eyebrow">Acces non inclus</span>
-        <h1>${escapeHtml(app?.name || "Application")}</h1>
-        <p>Cette application n'est pas incluse dans le forfait actuel.</p>
-        <div class="hero-actions">
-          <button class="primary" data-route="/plans">Voir les forfaits</button>
-          <button class="secondary" data-route="/dashboard">Retour</button>
-        </div>
-      </div>
-    </section>
-  `);
+  if (!app) {
+    shell(`<section class="empty-state"><h1>Application introuvable</h1></section>`);
+    return;
+  }
+  shell(
+    renderAppDetailPage(app, {
+      blocked: true,
+      allowed: false,
+      accessReason: "Cette application n'est pas incluse dans le forfait actuel.",
+    }),
+    { wide: true }
+  );
 }
 
 function render() {
