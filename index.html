@@ -8,7 +8,41 @@
       name="description"
       content="Plateforme Forge2M pour acceder aux applications industrielles et gerer les forfaits."
     />
-    <link rel="stylesheet" href="/src/styles.css?v=20260708-hub6" />
+    <script>
+      (() => {
+        const shellVersion = "20260708-hub7";
+        const versionKey = "forge2m-hub-shell-version";
+        const reloadKey = "forge2m-hub-shell-reloaded";
+        try {
+          const previousVersion = localStorage.getItem(versionKey);
+          if (previousVersion === shellVersion) {
+            return;
+          }
+          localStorage.setItem(versionKey, shellVersion);
+          const tasks = [];
+          if ("caches" in window) {
+            tasks.push(
+              caches
+                .keys()
+                .then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
+                .catch(() => {})
+            );
+          }
+          Promise.all(tasks).finally(() => {
+            if (sessionStorage.getItem(reloadKey) === shellVersion) {
+              return;
+            }
+            sessionStorage.setItem(reloadKey, shellVersion);
+            const url = new URL(location.href);
+            url.searchParams.set("v", shellVersion);
+            location.replace(url.toString());
+          });
+        } catch (error) {
+          // Continue booting if storage is unavailable.
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="/src/styles.css?v=20260708-hub7" />
   </head>
   <body>
     <div id="app" class="app-shell">
@@ -17,6 +51,6 @@
         <p>Chargement Forge2M Apps...</p>
       </div>
     </div>
-    <script type="module" src="/src/app.js?v=20260708-hub6"></script>
+    <script type="module" src="/src/app.js?v=20260708-hub7"></script>
   </body>
 </html>

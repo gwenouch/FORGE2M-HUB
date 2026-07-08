@@ -38,17 +38,11 @@ const appSections = [
     apps: ["parcours2m"],
     placeholders: [],
   },
-  {
-    id: "lab",
-    title: "Laboratoire Forge2M",
-    shortTitle: "Laboratoire",
-    description: "Idees et modules qui pourront devenir des produits.",
-    intro: "Espace d'essai pour les outils experimentaux et les futures branches produit.",
-    theme: "lab",
-    apps: [],
-    placeholders: [],
-  },
 ];
+
+function getLiveAppSections() {
+  return appSections.filter((section) => section.apps.length > 0);
+}
 
 const tickerAds = [
   {
@@ -261,8 +255,8 @@ function renderHome() {
             <span>Applications en catalogue</span>
           </div>
           <div class="hero-stat">
-            <strong>3</strong>
-            <span>Suites produit</span>
+            <strong>2</strong>
+            <span>Suites actives</span>
           </div>
           <div class="hero-stat">
             <strong>1</strong>
@@ -385,128 +379,56 @@ function renderRegister() {
 
 function renderDashboard() {
   if (!requireSession()) return;
-
-  const user = state.session.user;
-  const activeSection = appSections.find((section) => section.id === state.activeSuite);
-  if (!activeSection) {
-    shell(renderSuitePicker(user), { wide: true });
-    return;
-  }
-
-  const suite = renderSuiteWorkspace(activeSection, state.apps, user);
-  shell(`
-    ${suite}
-  `, { wide: true });
+  state.activeSuite = null;
+  shell(renderDirectDashboard(state.session.user), { wide: true });
 }
 
-function renderSuitePicker(user) {
-  return `
-    <section class="suite-picker">
-      <div class="suite-picker-head">
-        <div>
-          <span class="eyebrow">Portail Forge2M</span>
-          <h1>Bonjour ${escapeHtml(user.name)}</h1>
-          <p>Choisissez une suite pour acceder a vos applications et outils.</p>
-        </div>
-        <button class="secondary" data-route="/plans" type="button">Gerer mon forfait</button>
-      </div>
-      <div class="suite-choice-grid">
-        ${appSections.map(renderSuiteChoice).join("")}
-      </div>
-    </section>
-  `;
-}
-
-function renderSuiteChoice(section) {
-  const appCount = section.apps.length;
-  const countLabel = appCount
-    ? `${appCount} application${appCount > 1 ? "s" : ""}`
-    : "Bientot disponible";
-  return `
-    <button class="suite-choice suite-choice-${escapeHtml(section.theme)}" data-suite="${escapeHtml(section.id)}" type="button">
-      <span class="suite-choice-count">${countLabel}</span>
-      <span class="suite-choice-kicker">${escapeHtml(section.shortTitle)}</span>
-      <strong>${escapeHtml(section.title)}</strong>
-      <small>${escapeHtml(section.intro)}</small>
-    </button>
-  `;
-}
-
-function renderSuiteWorkspace(section, apps, user) {
-  const appBySlug = new Map(apps.map((app) => [app.slug, app]));
-  const realApps = section.apps
-    .map((slug) => appBySlug.get(slug))
-    .filter(Boolean)
-    .map(renderAppTile)
-    .join("");
+function renderDirectDashboard(user) {
+  const appBySlug = new Map(state.apps.map((app) => [app.slug, app]));
   const planName = state.session?.organization?.planName || "Forfait actif";
-  const tilesMarkup = realApps || `<p class="suite-empty">Aucune application disponible dans cette suite pour le moment.</p>`;
-
-  return `
-    <section class="suite-workspace suite-${escapeHtml(section.theme)}">
-      <div class="suite-topline">
-        <div>
-          <span class="eyebrow">Espace ${escapeHtml(section.shortTitle)}</span>
-          <strong>${escapeHtml(planName)}</strong>
-        </div>
-        <button class="secondary" data-action="change-suite" type="button">Changer de suite</button>
-      </div>
-      <div class="suite-hero">
-        <div>
-          <span class="eyebrow">${escapeHtml(section.title)}</span>
-          <h1>${escapeHtml(section.title)}</h1>
-          <p>${escapeHtml(section.intro)}</p>
-        </div>
-        <div class="suite-actions">
-          <div class="plan-pill">
-            <span>Forfait actif</span>
-            <strong>${escapeHtml(planName)}</strong>
-          </div>
-        </div>
-      </div>
-      <div class="suite-board">
-        <div class="section-title-row">
-          <div>
-            <span class="eyebrow">Applications</span>
-            <p>${escapeHtml(section.description)}</p>
-          </div>
-        </div>
-        <div class="launcher-grid">
-          ${tilesMarkup}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function renderDashboardSections(apps) {
-  const appBySlug = new Map(apps.map((app) => [app.slug, app]));
-
-  return appSections
+  const sections = getLiveAppSections()
     .map((section) => {
-      const realApps = section.apps
+      const tiles = section.apps
         .map((slug) => appBySlug.get(slug))
         .filter(Boolean)
         .map(renderAppTile)
         .join("");
-      const placeholders = section.placeholders.map(renderEmptyTile).join("");
-
+      if (!tiles) {
+        return "";
+      }
       return `
-        <section class="launcher-section">
+        <section class="dashboard-suite-block suite-${escapeHtml(section.theme)}">
           <div class="section-title-row">
             <div>
               <span class="eyebrow">${escapeHtml(section.title)}</span>
               <p>${escapeHtml(section.description)}</p>
             </div>
           </div>
-          <div class="launcher-grid">
-            ${realApps}
-            ${placeholders}
-          </div>
+          <div class="launcher-grid dashboard-launcher-grid">${tiles}</div>
         </section>
       `;
     })
     .join("");
+
+  return `
+    <section class="dashboard-direct">
+      <div class="suite-picker-head">
+        <div>
+          <span class="eyebrow">Portail Forge2M</span>
+          <h1>Bonjour ${escapeHtml(user.name)}</h1>
+          <p>RedKerf et Parcours2M — cliquez sur le logo pour lancer une application.</p>
+        </div>
+        <div class="suite-actions">
+          <div class="plan-pill">
+            <span>Forfait actif</span>
+            <strong>${escapeHtml(planName)}</strong>
+          </div>
+          <button class="secondary" data-route="/plans" type="button">Forfaits</button>
+        </div>
+      </div>
+      <div class="dashboard-suite-grid">${sections}</div>
+    </section>
+  `;
 }
 
 function renderAppTile(app) {
@@ -546,24 +468,6 @@ function renderAppTile(app) {
         </span>
       </a>
       <button class="tile-details-link" data-route="/apps/${escapeHtml(app.slug)}" type="button">Plus d infos</button>
-    </article>
-  `;
-}
-
-function renderEmptyTile(tile) {
-  return `
-    <article class="app-tile empty-slot">
-      <div class="tile-image placeholder-art">
-        <span>${escapeHtml(tile.icon)}</span>
-      </div>
-      <div class="tile-content">
-        <span class="badge locked">${escapeHtml(tile.label)}</span>
-        <h2>${escapeHtml(tile.name)}</h2>
-        <p>Emplacement reserve pour une future application Forge2M.</p>
-      </div>
-      <div class="tile-actions">
-        <button class="secondary unlock" data-route="/plans" type="button">Voir packs</button>
-      </div>
     </article>
   `;
 }
