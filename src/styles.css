@@ -537,7 +537,68 @@ input:focus {
 
 .dashboard-direct {
   display: grid;
-  gap: 22px;
+  gap: 16px;
+}
+
+.dashboard-panel {
+  padding: 18px 20px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(135deg, rgba(255, 122, 61, 0.08), transparent 42%),
+    rgba(14, 19, 23, 0.82);
+  box-shadow: var(--shadow-soft);
+}
+
+.dashboard-compact-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.dashboard-compact-greeting h1 {
+  margin: 0 0 4px;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  line-height: 1.2;
+}
+
+.dashboard-compact-greeting p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.dashboard-compact-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.plan-pill-compact {
+  min-width: 0;
+  padding: 8px 12px;
+}
+
+.plan-pill-compact span {
+  margin-bottom: 2px;
+  font-size: 0.62rem;
+}
+
+.plan-pill-compact strong {
+  font-size: 0.92rem;
+}
+
+.secondary-compact {
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 0.88rem;
 }
 
 .dashboard-suite-grid {
@@ -567,7 +628,13 @@ input:focus {
 }
 
 .dashboard-launcher-grid {
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.dashboard-panel .app-tile.pad-3d {
+  min-height: 300px;
+  padding: 16px 16px 14px;
 }
 
 .suite-picker {

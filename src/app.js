@@ -612,47 +612,31 @@ function renderDashboard() {
 function renderDirectDashboard(user) {
   const appBySlug = new Map(state.apps.map((app) => [app.slug, app]));
   const planName = state.session?.organization?.planName || "Forfait actif";
-  const sections = getLiveAppSections()
-    .map((section) => {
-      const tiles = section.apps
-        .map((slug) => appBySlug.get(slug))
-        .filter(Boolean)
-        .map(renderAppTile)
-        .join("");
-      if (!tiles) {
-        return "";
-      }
-      return `
-        <section class="dashboard-suite-block suite-${escapeHtml(section.theme)}">
-          <div class="section-title-row">
-            <div>
-              <span class="eyebrow">${escapeHtml(section.title)}</span>
-              <p>${escapeHtml(section.description)}</p>
-            </div>
-          </div>
-          <div class="launcher-grid dashboard-launcher-grid">${tiles}</div>
-        </section>
-      `;
-    })
+  const tiles = getLiveAppSections()
+    .flatMap((section) =>
+      section.apps.map((slug) => appBySlug.get(slug)).filter(Boolean)
+    )
+    .map(renderAppTile)
     .join("");
 
   return `
     <section class="dashboard-direct">
-      <div class="suite-picker-head">
-        <div>
-          <span class="eyebrow">Portail Forge2M</span>
-          <h1>Bonjour ${escapeHtml(user.name)}</h1>
-          <p>RedKerf et Parcours2M — cliquez sur le logo pour lancer une application.</p>
-        </div>
-        <div class="suite-actions">
-          <div class="plan-pill">
-            <span>Forfait actif</span>
-            <strong>${escapeHtml(planName)}</strong>
+      <div class="dashboard-panel">
+        <div class="dashboard-compact-head">
+          <div class="dashboard-compact-greeting">
+            <h1>Bonjour ${escapeHtml(user.name)}</h1>
+            <p>RedKerf et Parcours2M — cliquez sur le logo pour lancer.</p>
           </div>
-          <button class="secondary" data-route="/plans" type="button">Forfaits</button>
+          <div class="dashboard-compact-meta">
+            <div class="plan-pill plan-pill-compact">
+              <span>Forfait</span>
+              <strong>${escapeHtml(planName)}</strong>
+            </div>
+            <button class="secondary secondary-compact" data-route="/plans" type="button">Forfaits</button>
+          </div>
         </div>
+        <div class="launcher-grid dashboard-launcher-grid">${tiles}</div>
       </div>
-      <div class="dashboard-suite-grid">${sections}</div>
     </section>
   `;
 }
