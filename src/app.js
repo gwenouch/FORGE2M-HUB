@@ -284,62 +284,70 @@ function shell(content, options = {}) {
   const logged = Boolean(state.session?.authenticated);
   const path = currentPath();
   const user = state.session?.user;
-  const nav = logged
-    ? `<div class="user-pill" aria-label="Compte connecte">
-         <span class="user-pill-avatar">${escapeHtml((user?.name || "F2M").slice(0, 2).toUpperCase())}</span>
-         <span>
-           <strong>${escapeHtml(user?.name || "Forge2M")}</strong>
-           <small>${escapeHtml(state.session?.organization?.planName || "Forfait actif")}</small>
-         </span>
-       </div>
-       <button class="nav-link${path === "/dashboard" ? " is-active" : ""}" data-route="/dashboard">Dashboard</button>
-       <button class="nav-link${path === "/plans" ? " is-active" : ""}" data-route="/plans">Forfaits</button>
-       <button class="nav-link ghost" data-action="logout">Deconnexion</button>`
-    : `<button class="nav-link${path === "/login" ? " is-active" : ""}" data-route="/login">Connexion</button>`;
-  const dashboardStrip = options.dashboardUser ? renderDashboardTopStrip(options.dashboardUser) : "";
+  const brand = `
+    <button class="brand${options.dashboardUser ? " brand-compact" : ""}" data-route="${logged ? "/dashboard" : "/"}" aria-label="Accueil Forge2M">
+      <span class="brand-logo-wrap">
+        <img src="/assets/forge2m-logo.jpg" alt="Forge2M" class="brand-logo" />
+      </span>
+      <span>
+        <strong>Forge2M Apps</strong>
+        ${options.dashboardUser ? "" : "<small>Portail applicatif</small>"}
+      </span>
+    </button>
+  `;
+
+  let header;
+  if (options.dashboardUser) {
+    const planName = state.session?.organization?.planName || "Forfait actif";
+    header = `
+      <header class="topbar topbar-dashboard">
+        <div class="topbar-row topbar-row-single">
+          ${brand}
+          <div class="topbar-dashboard-greeting">
+            <strong>Bonjour ${escapeHtml(options.dashboardUser.name)}</strong>
+            <span>RedKerf &amp; Parcours2M — clic logo pour lancer</span>
+          </div>
+          <nav class="topbar-nav-unified">
+            <span class="nav-chip" title="Forfait actif">${escapeHtml(planName)}</span>
+            <button class="nav-link is-active" data-route="/dashboard" type="button">Dashboard</button>
+            <button class="nav-link${path === "/plans" ? " is-active" : ""}" data-route="/plans" type="button">Forfaits</button>
+            <button class="nav-link ghost" data-action="logout" type="button">Deconnexion</button>
+          </nav>
+        </div>
+      </header>
+    `;
+  } else {
+    const nav = logged
+      ? `<div class="user-pill" aria-label="Compte connecte">
+           <span class="user-pill-avatar">${escapeHtml((user?.name || "F2M").slice(0, 2).toUpperCase())}</span>
+           <span>
+             <strong>${escapeHtml(user?.name || "Forge2M")}</strong>
+             <small>${escapeHtml(state.session?.organization?.planName || "Forfait actif")}</small>
+           </span>
+         </div>
+         <button class="nav-link${path === "/dashboard" ? " is-active" : ""}" data-route="/dashboard" type="button">Dashboard</button>
+         <button class="nav-link${path === "/plans" ? " is-active" : ""}" data-route="/plans" type="button">Forfaits</button>
+         <button class="nav-link ghost" data-action="logout" type="button">Deconnexion</button>`
+      : `<button class="nav-link${path === "/login" ? " is-active" : ""}" data-route="/login" type="button">Connexion</button>`;
+
+    header = `
+      <header class="topbar">
+        <div class="topbar-row">
+          ${brand}
+          <nav>${nav}</nav>
+        </div>
+      </header>
+    `;
+  }
 
   appRoot.innerHTML = `
-    <header class="topbar${dashboardStrip ? " topbar-with-strip" : ""}">
-      <div class="topbar-row">
-        <button class="brand" data-route="${logged ? "/dashboard" : "/"}" aria-label="Accueil Forge2M">
-          <span class="brand-logo-wrap">
-            <img src="/assets/forge2m-logo.jpg" alt="Forge2M" class="brand-logo" />
-          </span>
-          <span>
-            <strong>Forge2M Apps</strong>
-            <small>Portail applicatif</small>
-          </span>
-        </button>
-        <nav>${nav}</nav>
-      </div>
-      ${dashboardStrip}
-    </header>
+    ${header}
     <main class="${options.wide ? "main wide" : "main"}">${content}</main>
     ${renderSiteFooter()}
     ${renderPromoTicker()}
   `;
 
   bindGlobalActions();
-}
-
-function renderDashboardTopStrip(user) {
-  const planName = state.session?.organization?.planName || "Forfait actif";
-
-  return `
-    <div class="dashboard-top-strip">
-      <div class="dashboard-compact-greeting">
-        <h1>Bonjour ${escapeHtml(user.name)}</h1>
-        <p>RedKerf et Parcours2M — cliquez sur le logo pour lancer.</p>
-      </div>
-      <div class="dashboard-compact-meta">
-        <div class="plan-pill plan-pill-compact">
-          <span>Forfait</span>
-          <strong>${escapeHtml(planName)}</strong>
-        </div>
-        <button class="secondary secondary-compact" data-route="/plans" type="button">Forfaits</button>
-      </div>
-    </div>
-  `;
 }
 
 function renderSiteFooter() {
