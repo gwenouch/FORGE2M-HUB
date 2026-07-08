@@ -299,29 +299,32 @@ function renderTopbarSlogan(className = "topbar-slogan") {
   `;
 }
 
+function renderTopbarBrand({ logged, compact }) {
+  const route = logged ? "/dashboard" : "/";
+  const copy = compact
+    ? ""
+    : `
+      <span class="brand-copy">
+        <strong>Forge2M Apps</strong>
+        <small>Portail applicatif</small>
+      </span>
+    `;
+
+  return `
+    <button class="brand brand-gif-brand${compact ? " brand-gif-brand-compact" : ""}" data-route="${route}" aria-label="Accueil Forge2M">
+      <span class="brand-logo-wrap brand-gif-wrap">
+        <img src="/assets/forge2m.gif" alt="Forge2M" class="brand-logo brand-gif" />
+      </span>
+      ${copy}
+    </button>
+  `;
+}
+
 function shell(content, options = {}) {
   const logged = Boolean(state.session?.authenticated);
   const path = currentPath();
   const user = state.session?.user;
-  const brand = options.dashboardUser
-    ? `
-    <button class="brand brand-compact brand-icon-only" data-route="/dashboard" aria-label="Dashboard Forge2M">
-      <span class="brand-logo-wrap">
-        <img src="/assets/forge2m-logo.jpg" alt="Forge2M" class="brand-logo" />
-      </span>
-    </button>
-  `
-    : `
-    <button class="brand" data-route="${logged ? "/dashboard" : "/"}" aria-label="Accueil Forge2M">
-      <span class="brand-logo-wrap">
-        <img src="/assets/forge2m-logo.jpg" alt="Forge2M" class="brand-logo" />
-      </span>
-      <span>
-        <strong>Forge2M Apps</strong>
-        <small>Portail applicatif</small>
-      </span>
-    </button>
-  `;
+  const brand = renderTopbarBrand({ logged, compact: Boolean(options.dashboardUser) });
 
   let header;
   if (options.dashboardUser) {
