@@ -123,7 +123,7 @@ button:disabled {
   position: relative;
   z-index: 1;
   min-height: 100vh;
-  padding-bottom: 54px;
+  padding-bottom: 200px;
 }
 
 .topbar {
@@ -1576,7 +1576,7 @@ input:focus {
   z-index: 30;
   display: flex;
   align-items: stretch;
-  min-height: 48px;
+  min-height: 192px;
   border-top: 1px solid rgba(255, 138, 61, 0.28);
   background:
     linear-gradient(90deg, rgba(255, 122, 61, 0.14), rgba(8, 11, 13, 0.96) 18%, rgba(8, 11, 13, 0.96) 82%, rgba(94, 196, 232, 0.12));
@@ -1589,11 +1589,11 @@ input:focus {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 28px;
   border-right: 1px solid rgba(255, 138, 61, 0.22);
   background: linear-gradient(180deg, rgba(255, 122, 61, 0.22), rgba(255, 122, 61, 0.08));
   color: #ffd1b1;
-  font-size: 0.68rem;
+  font-size: 0.92rem;
   font-weight: 900;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1630,8 +1630,8 @@ input:focus {
 .promo-ticker-item {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 22px 8px 10px;
+  gap: 20px;
+  padding: 20px 36px 20px 16px;
   text-decoration: none;
   color: var(--text);
   white-space: nowrap;
@@ -1643,15 +1643,16 @@ input:focus {
 }
 
 .promo-ticker-logo {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+  width: 128px;
+  height: 128px;
+  border-radius: 18px;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   background: var(--bg-2);
   display: grid;
   place-items: center;
   flex-shrink: 0;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
 }
 
 .promo-ticker-logo img {
@@ -1661,41 +1662,43 @@ input:focus {
 }
 
 .promo-ticker-fallback {
-  font-size: 0.68rem;
+  font-size: 1.6rem;
   font-weight: 900;
   color: var(--accent);
 }
 
 .promo-ticker-copy {
   display: inline-flex;
-  align-items: baseline;
-  gap: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
   min-width: 0;
 }
 
 .promo-ticker-copy strong {
-  font-size: 0.82rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: #fff;
+  line-height: 1.1;
 }
 
 .promo-ticker-copy span {
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--muted);
-  max-width: 52ch;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  max-width: 56ch;
+  white-space: normal;
+  line-height: 1.35;
 }
 
 .promo-ticker-price {
   flex-shrink: 0;
-  padding: 4px 10px;
+  padding: 10px 18px;
   border-radius: 999px;
   border: 1px solid rgba(255, 138, 61, 0.35);
   background: rgba(255, 122, 61, 0.12);
   color: #ffb88a;
-  font-size: 0.72rem;
+  font-size: 1.05rem;
   font-weight: 800;
 }
 
@@ -1707,23 +1710,46 @@ input:focus {
 
 .promo-ticker-sep {
   color: rgba(255, 138, 61, 0.45);
-  font-size: 0.55rem;
-  padding: 0 4px;
+  font-size: 0.85rem;
+  padding: 0 12px;
   user-select: none;
 }
 
 @media (max-width: 720px) {
+  .app-shell {
+    padding-bottom: 168px;
+  }
+
+  .promo-ticker {
+    min-height: 160px;
+  }
+
   .promo-ticker-badge {
     display: none;
   }
 
+  .promo-ticker-logo {
+    width: 88px;
+    height: 88px;
+  }
+
+  .promo-ticker-copy strong {
+    font-size: 1.05rem;
+  }
+
   .promo-ticker-copy span {
-    display: none;
+    font-size: 0.82rem;
+    max-width: 34ch;
+  }
+
+  .promo-ticker-price {
+    font-size: 0.88rem;
+    padding: 8px 12px;
   }
 
   .promo-ticker-item {
-    gap: 8px;
-    padding-right: 14px;
+    gap: 12px;
+    padding: 14px 20px 14px 12px;
   }
 }
 
