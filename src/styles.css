@@ -1702,10 +1702,10 @@ input:focus {
 }
 
 .promo-ticker-badge-logo {
-  height: 1em;
+  height: 6em;
   width: auto;
   display: block;
-  border-radius: 4px;
+  border-radius: 0.35em;
   object-fit: contain;
 }
 
