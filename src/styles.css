@@ -1699,6 +1699,7 @@ input:focus {
   background: linear-gradient(180deg, rgba(255, 122, 61, 0.22), rgba(255, 122, 61, 0.08));
   font-size: 0.92rem;
   line-height: 1;
+  perspective: 520px;
 }
 
 .promo-ticker-badge-logo {
@@ -1707,6 +1708,46 @@ input:focus {
   display: block;
   border-radius: 0.35em;
   object-fit: contain;
+  transform-origin: center center;
+  animation: promo-badge-logo-ad 5.2s ease-in-out infinite;
+  will-change: transform, opacity, filter;
+}
+
+@keyframes promo-badge-logo-ad {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1);
+    filter: drop-shadow(0 0 14px rgba(255, 138, 61, 0.4));
+  }
+
+  20% {
+    opacity: 1;
+    transform: rotateY(180deg) scale(1.08);
+    filter: drop-shadow(0 0 22px rgba(255, 138, 61, 0.55));
+  }
+
+  36% {
+    opacity: 0;
+    transform: rotateY(270deg) scale(0.72);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+
+  48% {
+    opacity: 0;
+    transform: rotateY(270deg) scale(0.72);
+  }
+
+  64% {
+    opacity: 0.45;
+    transform: rotateY(360deg) scale(0.92);
+    filter: drop-shadow(0 0 10px rgba(255, 138, 61, 0.25));
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotateY(360deg) scale(1);
+    filter: drop-shadow(0 0 14px rgba(255, 138, 61, 0.4));
+  }
 }
 
 .promo-ticker-viewport {
@@ -1863,6 +1904,10 @@ input:focus {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .promo-ticker-badge-logo {
+    animation: none;
+  }
+
   .promo-ticker-track {
     animation: none;
     flex-wrap: wrap;
