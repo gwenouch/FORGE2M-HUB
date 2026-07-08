@@ -1754,7 +1754,7 @@ input:focus {
     flex-wrap: nowrap;
   }
 
-  .topbar-row {
+  .topbar-row:not(.topbar-row-slim) {
     padding-top: 12px;
     padding-bottom: 12px;
   }
