@@ -150,10 +150,10 @@ button:disabled {
 }
 
 .topbar-row-single {
-  gap: 8px;
-  padding: 6px 16px;
+  gap: 12px;
+  padding: 14px 20px;
   flex-wrap: nowrap;
-  min-height: 44px;
+  min-height: auto;
 }
 
 .brand-compact {
@@ -171,15 +171,20 @@ button:disabled {
   box-shadow: none;
 }
 
+.topbar-row:has(.topbar-slogan) {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
 .topbar-slogan {
   flex: 1;
   min-width: 0;
   margin: 0;
-  padding: 0 8px;
+  padding: 0 12px;
   text-align: center;
-  font-size: 0.72rem;
+  font-size: 2.16rem;
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.2;
   color: var(--muted);
   white-space: nowrap;
   overflow: hidden;
@@ -189,7 +194,7 @@ button:disabled {
 .topbar-slogan-brand {
   color: #ffd1b1;
   font-weight: 800;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
 }
 
 .topbar-slogan-text em {
@@ -199,7 +204,7 @@ button:disabled {
 }
 
 .topbar-slogan-dashboard {
-  font-size: 0.7rem;
+  font-size: 2.16rem;
 }
 
 .topbar-nav-unified {
@@ -1635,6 +1640,8 @@ input:focus {
     flex-basis: 100%;
     text-align: left;
     padding: 0;
+    font-size: 1.35rem;
+    white-space: normal;
   }
 
   .topbar-nav-unified {
