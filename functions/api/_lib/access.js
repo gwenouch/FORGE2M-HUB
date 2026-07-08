@@ -64,6 +64,11 @@ export function publicApp(app, session) {
 }
 
 export function publicPlan(plan, session) {
+  const appNames = {
+    redkerf: "RedKerf",
+    parcours2m: "Parcours2M",
+  };
+
   return {
     id: plan.id,
     slug: plan.slug,
@@ -73,6 +78,6 @@ export function publicPlan(plan, session) {
     priceYearly: plan.priceYearly,
     isActive: plan.isActive,
     isCurrent: session?.organization?.planSlug === plan.slug,
-    apps: plan.appSlugs.map((slug) => (slug === "redkerf" ? "RedKerf" : slug)),
+    apps: plan.appSlugs.map((slug) => appNames[slug] || slug),
   };
 }

@@ -41,11 +41,11 @@ const appSections = [
     description: "Guides, itineraires et carnets pour vendre des experiences mieux preparees.",
     intro: "Une suite plus claire pour les outils de voyage, de planification et de loisirs.",
     theme: "travel",
-    apps: [],
+    apps: ["parcours2m"],
     placeholders: [
-      { name: "Guide voyage", icon: "GV", label: "A venir" },
       { name: "Planificateur sejour", icon: "PS", label: "A venir" },
       { name: "Carnet de route", icon: "CR", label: "A venir" },
+      { name: "Goodies voyage", icon: "GV", label: "A venir" },
     ],
   },
   {

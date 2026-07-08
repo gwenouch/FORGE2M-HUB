@@ -35,6 +35,27 @@ export function getApps(env = {}) {
       ],
       createdAt: "2026-06-30",
     },
+    {
+      id: "app_parcours2m",
+      name: "Parcours2M",
+      slug: "parcours2m",
+      description: "Creation d'itineraires, couts detailles, lieux, activites et guides de voyage.",
+      longDescription:
+        "Parcours2M preparera des parcours de voyage vendables avec itineraires, budget, lieux, activites et contenus utiles pour partir mieux organise.",
+      iconText: "P2M",
+      image: "/assets/parcours2m-logo.jpg",
+      status: "coming-soon",
+      isActive: true,
+      url: env.PARCOURS2M_URL || "https://parcours2m.forge2m.com",
+      tags: ["Voyage", "Itineraires", "Guides"],
+      benefits: [
+        "Creer des itineraires clairs",
+        "Structurer les couts de voyage",
+        "Regrouper lieux et activites",
+        "Preparer une offre vendable",
+      ],
+      createdAt: "2026-07-08",
+    },
   ];
 }
 
