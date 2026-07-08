@@ -478,7 +478,12 @@ function renderPromoTicker() {
   return `
     <aside class="promo-ticker" aria-label="Annonces applications Forge2M">
       <div class="promo-ticker-badge">
-        <img src="/assets/forge2m-logo.jpg" alt="Forge2M" class="promo-ticker-badge-logo" />
+        <div class="promo-ticker-badge-stack">
+          <img src="/assets/forge2m-logo.jpg" alt="Forge2M" class="promo-ticker-badge-logo" />
+          <p class="promo-ticker-breaking" aria-label="Breaking news">
+            <span class="promo-ticker-breaking-label">Breaking News</span>
+          </p>
+        </div>
       </div>
       <div class="promo-ticker-viewport">
         <div class="promo-ticker-track">${loop}</div>
