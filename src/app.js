@@ -284,14 +284,22 @@ function shell(content, options = {}) {
   const logged = Boolean(state.session?.authenticated);
   const path = currentPath();
   const user = state.session?.user;
-  const brand = `
-    <button class="brand${options.dashboardUser ? " brand-compact" : ""}" data-route="${logged ? "/dashboard" : "/"}" aria-label="Accueil Forge2M">
+  const brand = options.dashboardUser
+    ? `
+    <button class="brand brand-compact brand-icon-only" data-route="/dashboard" aria-label="Dashboard Forge2M">
+      <span class="brand-logo-wrap">
+        <img src="/assets/forge2m-logo.jpg" alt="Forge2M" class="brand-logo" />
+      </span>
+    </button>
+  `
+    : `
+    <button class="brand" data-route="${logged ? "/dashboard" : "/"}" aria-label="Accueil Forge2M">
       <span class="brand-logo-wrap">
         <img src="/assets/forge2m-logo.jpg" alt="Forge2M" class="brand-logo" />
       </span>
       <span>
         <strong>Forge2M Apps</strong>
-        ${options.dashboardUser ? "" : "<small>Portail applicatif</small>"}
+        <small>Portail applicatif</small>
       </span>
     </button>
   `;
@@ -304,8 +312,7 @@ function shell(content, options = {}) {
         <div class="topbar-row topbar-row-single">
           ${brand}
           <div class="topbar-dashboard-greeting">
-            <strong>Bonjour ${escapeHtml(options.dashboardUser.name)}</strong>
-            <span>RedKerf &amp; Parcours2M — clic logo pour lancer</span>
+            <span>Bonjour ${escapeHtml(options.dashboardUser.name)} · clic logo pour lancer</span>
           </div>
           <nav class="topbar-nav-unified">
             <span class="nav-chip" title="Forfait actif">${escapeHtml(planName)}</span>

@@ -150,52 +150,47 @@ button:disabled {
 }
 
 .topbar-row-single {
-  gap: 14px;
-  padding: 10px 24px;
+  gap: 8px;
+  padding: 6px 16px;
   flex-wrap: nowrap;
+  min-height: 44px;
 }
 
 .brand-compact {
   flex-shrink: 0;
 }
 
-.brand-compact .brand-logo-wrap {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+.brand-icon-only {
+  gap: 0;
 }
 
-.brand-compact strong {
-  font-size: 0.92rem;
+.brand-compact .brand-logo-wrap {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  box-shadow: none;
 }
 
 .topbar-dashboard-greeting {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
   flex: 1;
   min-width: 0;
   overflow: hidden;
-  white-space: nowrap;
-}
-
-.topbar-dashboard-greeting strong {
-  font-size: 0.95rem;
-  line-height: 1.2;
-  flex-shrink: 0;
 }
 
 .topbar-dashboard-greeting span {
+  display: block;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .topbar-nav-unified {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   align-items: center;
   flex-shrink: 0;
 }
@@ -203,22 +198,23 @@ button:disabled {
 .nav-chip {
   display: inline-flex;
   align-items: center;
-  min-height: 36px;
-  padding: 0 14px;
+  min-height: 28px;
+  padding: 0 9px;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.68rem;
   font-weight: 800;
   color: #ffd1b1;
   background: var(--accent-soft);
   border: 1px solid rgba(255, 138, 61, 0.28);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
 .topbar-dashboard .nav-link {
-  min-height: 36px;
-  padding: 0 14px;
-  font-size: 0.82rem;
+  min-height: 28px;
+  padding: 0 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 .brand {
@@ -337,7 +333,7 @@ button:disabled {
 
 .main.wide {
   width: min(1360px, calc(100% - 40px));
-  padding-top: 24px;
+  padding-top: 16px;
 }
 
 .eyebrow {
@@ -1615,15 +1611,13 @@ input:focus {
   }
 
   .topbar-row-single {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
   }
 
   .topbar-dashboard-greeting {
     order: 3;
     flex-basis: 100%;
-    white-space: normal;
-    flex-wrap: wrap;
   }
 
   .topbar-nav-unified {
