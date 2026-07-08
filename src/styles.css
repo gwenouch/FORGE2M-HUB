@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@600;700&display=swap");
+
 :root {
   color-scheme: dark;
   --bg-0: #080b0d;
@@ -222,25 +224,64 @@ button:disabled {
   margin: 0;
   padding: 0 12px;
   text-align: center;
+  font-family: "Cinzel", "Times New Roman", serif;
   font-size: 2.16rem;
-  font-weight: 600;
-  line-height: 1.2;
-  color: var(--muted);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.05em;
+  color: #dce3e9;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transform: perspective(620px) rotateX(11deg) rotateZ(-2.2deg) skewX(-4deg);
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  text-shadow:
+    0 1px 0 #6b7782,
+    0 2px 0 #5c6771,
+    0 3px 0 #4d5660,
+    0 4px 0 #3f464f,
+    0 5px 0 #31373e,
+    0 6px 0 #23282d,
+    0 7px 1px rgba(0, 0, 0, 0.52),
+    0 0 18px rgba(255, 138, 61, 0.16),
+    0 12px 22px rgba(0, 0, 0, 0.4);
+  filter: drop-shadow(0 2px 0 rgba(255, 138, 61, 0.12));
 }
 
 .topbar-slogan-brand {
-  color: #ffd1b1;
-  font-weight: 800;
-  letter-spacing: 0.03em;
+  font-family: "Rajdhani", "Arial Narrow", sans-serif;
+  font-weight: 700;
+  font-size: 1.06em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffe0c7;
+  text-shadow:
+    0 1px 0 #8a4b22,
+    0 2px 0 #713d1b,
+    0 3px 0 #582f14,
+    0 4px 0 #3f210d,
+    0 5px 2px rgba(0, 0, 0, 0.55),
+    0 0 16px rgba(255, 138, 61, 0.42);
+}
+
+.topbar-slogan-text {
+  font-family: "Cinzel", "Times New Roman", serif;
+  font-weight: 700;
 }
 
 .topbar-slogan-text em {
-  color: #ffb88a;
-  font-style: normal;
+  font-family: "Rajdhani", "Arial Narrow", sans-serif;
   font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0.07em;
+  color: #ffbf88;
+  text-shadow:
+    0 1px 0 #7a3f18,
+    0 2px 0 #623214,
+    0 3px 0 #4a260f,
+    0 4px 1px rgba(0, 0, 0, 0.5),
+    0 0 14px rgba(255, 122, 61, 0.48);
 }
 
 .topbar-slogan-dashboard {
@@ -1684,6 +1725,7 @@ input:focus {
     padding: 0;
     font-size: 1.35rem;
     white-space: normal;
+    transform: perspective(520px) rotateX(7deg) rotateZ(-1.5deg) skewX(-2.5deg);
   }
 
   .topbar-nav-unified {
