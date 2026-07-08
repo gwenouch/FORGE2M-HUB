@@ -7,6 +7,9 @@ const state = {
   error: "",
 };
 
+const FORGE2M_SLOGAN_TAGLINE = "Un portail, un lien : l'atelier et le chemin.";
+const FORGE2M_SLOGAN_HIGHLIGHT = "l'atelier et le chemin";
+
 const routes = {
   "/": renderHome,
   "/login": renderLogin,
@@ -280,6 +283,20 @@ async function bootstrap() {
   }
 }
 
+function renderTopbarSlogan(className = "topbar-slogan") {
+  const tagline = FORGE2M_SLOGAN_TAGLINE.replace(
+    FORGE2M_SLOGAN_HIGHLIGHT,
+    `<em>${FORGE2M_SLOGAN_HIGHLIGHT}</em>`
+  );
+
+  return `
+    <p class="${className}" aria-label="Slogan Forge2M">
+      <span class="topbar-slogan-brand">Forge2M</span>
+      <span class="topbar-slogan-text"> — ${tagline}.</span>
+    </p>
+  `;
+}
+
 function shell(content, options = {}) {
   const logged = Boolean(state.session?.authenticated);
   const path = currentPath();
@@ -311,9 +328,7 @@ function shell(content, options = {}) {
       <header class="topbar topbar-dashboard">
         <div class="topbar-row topbar-row-single">
           ${brand}
-          <div class="topbar-dashboard-greeting">
-            <span>Bonjour ${escapeHtml(options.dashboardUser.name)} · clic logo pour lancer</span>
-          </div>
+          ${renderTopbarSlogan("topbar-slogan topbar-slogan-dashboard")}
           <nav class="topbar-nav-unified">
             <span class="nav-chip" title="Forfait actif">${escapeHtml(planName)}</span>
             <button class="nav-link is-active" data-route="/dashboard" type="button">Dashboard</button>
@@ -341,6 +356,7 @@ function shell(content, options = {}) {
       <header class="topbar">
         <div class="topbar-row">
           ${brand}
+          ${renderTopbarSlogan()}
           <nav>${nav}</nav>
         </div>
       </header>
