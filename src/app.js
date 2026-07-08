@@ -296,19 +296,23 @@ function shell(content, options = {}) {
        <button class="nav-link${path === "/plans" ? " is-active" : ""}" data-route="/plans">Forfaits</button>
        <button class="nav-link ghost" data-action="logout">Deconnexion</button>`
     : `<button class="nav-link${path === "/login" ? " is-active" : ""}" data-route="/login">Connexion</button>`;
+  const dashboardStrip = options.dashboardUser ? renderDashboardTopStrip(options.dashboardUser) : "";
 
   appRoot.innerHTML = `
-    <header class="topbar">
-      <button class="brand" data-route="${logged ? "/dashboard" : "/"}" aria-label="Accueil Forge2M">
-        <span class="brand-logo-wrap">
-          <img src="/assets/forge2m-logo.jpg" alt="Forge2M" class="brand-logo" />
-        </span>
-        <span>
-          <strong>Forge2M Apps</strong>
-          <small>Portail applicatif</small>
-        </span>
-      </button>
-      <nav>${nav}</nav>
+    <header class="topbar${dashboardStrip ? " topbar-with-strip" : ""}">
+      <div class="topbar-row">
+        <button class="brand" data-route="${logged ? "/dashboard" : "/"}" aria-label="Accueil Forge2M">
+          <span class="brand-logo-wrap">
+            <img src="/assets/forge2m-logo.jpg" alt="Forge2M" class="brand-logo" />
+          </span>
+          <span>
+            <strong>Forge2M Apps</strong>
+            <small>Portail applicatif</small>
+          </span>
+        </button>
+        <nav>${nav}</nav>
+      </div>
+      ${dashboardStrip}
     </header>
     <main class="${options.wide ? "main wide" : "main"}">${content}</main>
     ${renderSiteFooter()}
@@ -316,6 +320,26 @@ function shell(content, options = {}) {
   `;
 
   bindGlobalActions();
+}
+
+function renderDashboardTopStrip(user) {
+  const planName = state.session?.organization?.planName || "Forfait actif";
+
+  return `
+    <div class="dashboard-top-strip">
+      <div class="dashboard-compact-greeting">
+        <h1>Bonjour ${escapeHtml(user.name)}</h1>
+        <p>RedKerf et Parcours2M — cliquez sur le logo pour lancer.</p>
+      </div>
+      <div class="dashboard-compact-meta">
+        <div class="plan-pill plan-pill-compact">
+          <span>Forfait</span>
+          <strong>${escapeHtml(planName)}</strong>
+        </div>
+        <button class="secondary secondary-compact" data-route="/plans" type="button">Forfaits</button>
+      </div>
+    </div>
+  `;
 }
 
 function renderSiteFooter() {
@@ -606,37 +630,38 @@ function renderRegister() {
 function renderDashboard() {
   if (!requireSession()) return;
   state.activeSuite = null;
-  shell(renderDirectDashboard(state.session.user), { wide: true });
+  shell(renderDirectDashboard(), { wide: true, dashboardUser: state.session.user });
 }
 
-function renderDirectDashboard(user) {
+function renderDirectDashboard() {
   const appBySlug = new Map(state.apps.map((app) => [app.slug, app]));
-  const planName = state.session?.organization?.planName || "Forfait actif";
-  const tiles = getLiveAppSections()
-    .flatMap((section) =>
-      section.apps.map((slug) => appBySlug.get(slug)).filter(Boolean)
-    )
-    .map(renderAppTile)
+  const sections = getLiveAppSections()
+    .map((section) => {
+      const tiles = section.apps
+        .map((slug) => appBySlug.get(slug))
+        .filter(Boolean)
+        .map(renderAppTile)
+        .join("");
+      if (!tiles) {
+        return "";
+      }
+      return `
+        <section class="dashboard-suite-block suite-${escapeHtml(section.theme)}">
+          <div class="section-title-row">
+            <div>
+              <span class="eyebrow">${escapeHtml(section.title)}</span>
+              <p>${escapeHtml(section.description)}</p>
+            </div>
+          </div>
+          <div class="launcher-grid dashboard-launcher-grid">${tiles}</div>
+        </section>
+      `;
+    })
     .join("");
 
   return `
     <section class="dashboard-direct">
-      <div class="dashboard-panel">
-        <div class="dashboard-compact-head">
-          <div class="dashboard-compact-greeting">
-            <h1>Bonjour ${escapeHtml(user.name)}</h1>
-            <p>RedKerf et Parcours2M — cliquez sur le logo pour lancer.</p>
-          </div>
-          <div class="dashboard-compact-meta">
-            <div class="plan-pill plan-pill-compact">
-              <span>Forfait</span>
-              <strong>${escapeHtml(planName)}</strong>
-            </div>
-            <button class="secondary secondary-compact" data-route="/plans" type="button">Forfaits</button>
-          </div>
-        </div>
-        <div class="launcher-grid dashboard-launcher-grid">${tiles}</div>
-      </div>
+      <div class="dashboard-suite-grid">${sections}</div>
     </section>
   `;
 }
