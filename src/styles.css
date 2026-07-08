@@ -151,16 +151,16 @@ button:disabled {
 }
 
 .topbar-row:has(.brand-gif-brand) {
-  --topbar-gif-size: clamp(104px, 11vw, 148px);
+  --topbar-gif-size: clamp(208px, 22vw, 296px);
   align-items: center;
-  gap: 14px;
-  padding: 10px 20px;
-  min-height: calc(var(--topbar-gif-size) + 20px);
+  gap: 10px;
+  padding: 7px 16px;
+  min-height: calc(var(--topbar-gif-size) + 13px);
 }
 
 .topbar-row-single {
-  gap: 14px;
-  padding: 10px 20px;
+  gap: 10px;
+  padding: 7px 16px;
   flex-wrap: nowrap;
   align-items: center;
 }
@@ -219,8 +219,8 @@ button:disabled {
 }
 
 .topbar-row:has(.topbar-slogan) {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
 
 .topbar-slogan {
@@ -228,10 +228,10 @@ button:disabled {
   flex: 1;
   min-width: 0;
   margin: 0;
-  padding: 0 10px;
+  padding: 0 8px;
   text-align: center;
   font-family: "Cinzel", "Times New Roman", serif;
-  font-size: clamp(0.95rem, 1.55vw, 1.55rem);
+  font-size: clamp(0.64rem, 1.04vw, 1.04rem);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0.04em;
@@ -294,7 +294,7 @@ button:disabled {
 }
 
 .topbar-slogan-dashboard {
-  font-size: clamp(0.92rem, 1.5vw, 1.48rem);
+  font-size: clamp(0.62rem, 1vw, 0.98rem);
 }
 
 .topbar-nav-unified {
@@ -1727,7 +1727,7 @@ input:focus {
   }
 
   .topbar-row:has(.brand-gif-brand) {
-    --topbar-gif-size: 92px;
+    --topbar-gif-size: 123px;
   }
 
   .topbar-slogan,
@@ -1736,7 +1736,7 @@ input:focus {
     flex-basis: 100%;
     text-align: center;
     padding: 0;
-    font-size: 1rem;
+    font-size: 0.68rem;
     white-space: normal;
     transform: perspective(520px) rotateX(6deg) rotateZ(-1deg) skewX(-2deg);
     -webkit-line-clamp: 3;
