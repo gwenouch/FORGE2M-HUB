@@ -313,7 +313,7 @@ function renderTopbarBrand({ logged, compact }) {
   return `
     <button class="brand brand-gif-brand${compact ? " brand-gif-brand-compact" : ""}" data-route="${route}" aria-label="Accueil Forge2M">
       <span class="brand-logo-wrap brand-gif-wrap">
-        <img src="/assets/forge2m.gif?v=hub30" alt="Forge2M" class="brand-logo brand-gif" loading="eager" decoding="async" />
+        <img src="/assets/forge2m.gif?v=hub31" alt="Forge2M" class="brand-logo brand-gif" loading="eager" decoding="async" />
       </span>
       ${copy}
     </button>
@@ -330,8 +330,8 @@ function shell(content, options = {}) {
   if (options.dashboardUser) {
     const planName = state.session?.organization?.planName || "Forfait actif";
     header = `
-      <header class="topbar topbar-dashboard">
-        <div class="topbar-row topbar-row-single">
+      <header class="topbar topbar-slim topbar-dashboard">
+        <div class="topbar-row topbar-row-slim">
           ${brand}
           ${renderTopbarSlogan("topbar-slogan topbar-slogan-dashboard")}
           <nav class="topbar-nav-unified">
@@ -358,8 +358,8 @@ function shell(content, options = {}) {
       : `<button class="nav-link${path === "/login" ? " is-active" : ""}" data-route="/login" type="button">Connexion</button>`;
 
     header = `
-      <header class="topbar">
-        <div class="topbar-row">
+      <header class="topbar topbar-slim">
+        <div class="topbar-row topbar-row-slim">
           ${brand}
           ${renderTopbarSlogan()}
           <nav>${nav}</nav>

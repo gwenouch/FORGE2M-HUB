@@ -151,7 +151,68 @@ button:disabled {
   align-items: center;
 }
 
-.topbar-row:has(.brand-gif-brand) {
+.topbar-slim {
+  --topbar-h: 48px;
+  --topbar-gif-size: 200px;
+  height: var(--topbar-h);
+  min-height: var(--topbar-h);
+  max-height: var(--topbar-h);
+  overflow: visible;
+}
+
+.topbar-slim .topbar-row,
+.topbar-row-slim {
+  height: var(--topbar-h);
+  min-height: var(--topbar-h);
+  max-height: var(--topbar-h);
+  padding: 0 12px 0 calc(var(--topbar-gif-size) + 14px);
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.topbar-slim .brand-gif-brand {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--topbar-gif-size);
+  height: var(--topbar-gif-size);
+  flex: none;
+  margin: 0;
+  padding: 0;
+  z-index: 30;
+  overflow: visible;
+}
+
+.topbar-slim .brand-gif-wrap {
+  position: static;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  transform: none;
+  border-radius: 10px;
+  overflow: visible;
+  border: 1px solid var(--line-strong);
+  background: rgba(8, 11, 13, 0.55);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(255, 138, 61, 0.12);
+  line-height: 0;
+}
+
+.topbar-slim .brand-gif {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  pointer-events: none;
+  transform: none;
+}
+
+.topbar-row:has(.brand-gif-brand):not(.topbar-row-slim) {
   --topbar-band-h: 3.5rem;
   --topbar-gif-base: 9.25rem;
   --topbar-gif-scale: 2;
@@ -163,58 +224,6 @@ button:disabled {
   gap: 8px;
   overflow: visible;
   align-items: center;
-}
-
-.topbar-row-single {
-  gap: 8px;
-  padding: 0 12px;
-  flex-wrap: nowrap;
-  align-items: center;
-}
-
-.brand-gif-brand {
-  position: relative;
-  align-self: center;
-  display: block;
-  flex: 0 0 var(--topbar-gif-visual, 18.5rem);
-  width: var(--topbar-gif-visual, 18.5rem);
-  height: var(--topbar-band-h, 3.5rem);
-  padding: 0;
-  overflow: visible;
-}
-
-.brand-gif-brand-compact {
-  gap: 0;
-}
-
-.brand-gif-wrap {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  display: block;
-  width: var(--topbar-gif-base, 9.25rem);
-  height: var(--topbar-gif-base, 9.25rem);
-  margin: 0;
-  transform: translateY(-50%);
-  border-radius: 12px;
-  overflow: visible;
-  border: 1px solid var(--line-strong);
-  background: rgba(8, 11, 13, 0.55);
-  box-shadow:
-    0 10px 28px rgba(0, 0, 0, 0.35),
-    0 0 20px rgba(255, 138, 61, 0.12);
-  line-height: 0;
-}
-
-.brand-gif {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: contain;
-  object-position: center;
-  pointer-events: none;
-  transform: scale(var(--topbar-gif-scale, 2));
-  transform-origin: left center;
 }
 
 .brand-gif-brand .brand-copy {
@@ -454,16 +463,13 @@ button:disabled {
   padding: 36px 0 64px;
 }
 
-.app-shell:has(.brand-gif-brand) .main {
-  padding-top: 7rem;
+.app-shell:has(.topbar-slim) .main,
+.app-shell:has(.topbar-slim) .main.wide {
+  padding-top: calc(var(--topbar-gif-size) * 0.52 + 12px);
 }
 
 .main.wide {
   width: min(1360px, calc(100% - 40px));
-}
-
-.app-shell:has(.brand-gif-brand) .main.wide {
-  padding-top: 7rem;
 }
 
 .eyebrow {
@@ -1735,25 +1741,36 @@ input:focus {
     flex-wrap: wrap;
   }
 
+  .topbar-slim {
+    --topbar-h: 44px;
+    --topbar-gif-size: 160px;
+  }
+
+  .topbar-slim .topbar-row,
+  .topbar-row-slim {
+    padding-left: calc(var(--topbar-gif-size) + 10px);
+    padding-top: 0;
+    padding-bottom: 0;
+    flex-wrap: nowrap;
+  }
+
   .topbar-row {
     padding-top: 12px;
     padding-bottom: 12px;
   }
 
-  .topbar-row-single {
-    padding-top: 6px;
-    padding-bottom: 6px;
+  .topbar-slim .topbar-slogan,
+  .topbar-slim .topbar-slogan-dashboard {
+    order: 0;
+    flex-basis: auto;
+    font-size: 0.52rem;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
   }
 
-  .topbar-row:has(.brand-gif-brand) {
-    --topbar-band-h: 3rem;
-    --topbar-gif-base: 5.5rem;
-    --topbar-gif-scale: 2;
-  }
-
-  .app-shell:has(.brand-gif-brand) .main,
-  .app-shell:has(.brand-gif-brand) .main.wide {
-    padding-top: 5rem;
+  .app-shell:has(.topbar-slim) .main,
+  .app-shell:has(.topbar-slim) .main.wide {
+    padding-top: calc(var(--topbar-gif-size) * 0.5 + 10px);
   }
 
   .topbar-slogan,
