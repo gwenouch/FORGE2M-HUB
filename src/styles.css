@@ -1709,44 +1709,57 @@ input:focus {
   border-radius: 0.35em;
   object-fit: contain;
   transform-origin: center center;
-  animation: promo-badge-logo-ad 5.2s ease-in-out infinite;
+  transform-style: preserve-3d;
+  animation: promo-badge-logo-spiral 6s ease-in-out infinite;
   will-change: transform, opacity, filter;
 }
 
-@keyframes promo-badge-logo-ad {
+@keyframes promo-badge-logo-spiral {
   0% {
     opacity: 1;
-    transform: rotateY(0deg) scale(1);
-    filter: drop-shadow(0 0 14px rgba(255, 138, 61, 0.4));
+    transform: rotateZ(0deg) rotateY(0deg) scale(1);
+    filter: drop-shadow(0 0 16px rgba(255, 138, 61, 0.45));
   }
 
-  20% {
+  18% {
     opacity: 1;
-    transform: rotateY(180deg) scale(1.08);
+    transform: rotateZ(360deg) rotateY(140deg) scale(0.86);
     filter: drop-shadow(0 0 22px rgba(255, 138, 61, 0.55));
   }
 
-  36% {
+  34% {
+    opacity: 0.8;
+    transform: rotateZ(720deg) rotateY(260deg) scale(0.58);
+    filter: drop-shadow(0 0 10px rgba(255, 138, 61, 0.3));
+  }
+
+  44% {
     opacity: 0;
-    transform: rotateY(270deg) scale(0.72);
+    transform: rotateZ(990deg) rotateY(340deg) scale(0.2);
     filter: drop-shadow(0 0 0 transparent);
   }
 
-  48% {
+  54% {
     opacity: 0;
-    transform: rotateY(270deg) scale(0.72);
+    transform: rotateZ(990deg) rotateY(340deg) scale(0.14);
   }
 
-  64% {
+  70% {
     opacity: 0.45;
-    transform: rotateY(360deg) scale(0.92);
+    transform: rotateZ(1260deg) rotateY(500deg) scale(0.5);
     filter: drop-shadow(0 0 10px rgba(255, 138, 61, 0.25));
+  }
+
+  86% {
+    opacity: 0.92;
+    transform: rotateZ(1440deg) rotateY(620deg) scale(0.84);
+    filter: drop-shadow(0 0 18px rgba(255, 138, 61, 0.42));
   }
 
   100% {
     opacity: 1;
-    transform: rotateY(360deg) scale(1);
-    filter: drop-shadow(0 0 14px rgba(255, 138, 61, 0.4));
+    transform: rotateZ(1620deg) rotateY(720deg) scale(1);
+    filter: drop-shadow(0 0 16px rgba(255, 138, 61, 0.45));
   }
 }
 
