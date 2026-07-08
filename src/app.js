@@ -13,7 +13,155 @@ const routes = {
   "/register": renderRegister,
   "/dashboard": renderDashboard,
   "/plans": renderPlans,
+  "/a-propos": () => renderStaticSitePage("about"),
+  "/contact": () => renderStaticSitePage("contact"),
+  "/faq": () => renderStaticSitePage("faq"),
+  "/support": () => renderStaticSitePage("support"),
+  "/mentions-legales": () => renderStaticSitePage("legal"),
+  "/confidentialite": () => renderStaticSitePage("privacy"),
+  "/conditions": () => renderStaticSitePage("terms"),
 };
+
+const sitePageContent = {
+  about: {
+    title: "A propos de Forge2M",
+    eyebrow: "Entreprise",
+    intro:
+      "Forge2M developpe des applications pour l'industrie, les voyages et les futurs outils numeriques de la suite.",
+    blocks: [
+      {
+        title: "Notre mission",
+        text: "Centraliser l'acces aux applications Forge2M et simplifier la gestion des forfaits pour nos clients.",
+      },
+      {
+        title: "Nos applications",
+        text: "RedKerf pour la coupe plasma et Parcours2M pour les voyages. D'autres outils seront ajoutes progressivement.",
+      },
+      {
+        title: "Forge de Montagnes",
+        text: "Informations societe, historique et equipe a completer prochainement.",
+      },
+    ],
+  },
+  contact: {
+    title: "Contactez-nous",
+    eyebrow: "Contact",
+    intro: "Une question sur RedKerf, Parcours2M ou votre forfait ? Ecrivez-nous.",
+    blocks: [
+      { title: "Courriel", text: "contact@forge2m.com (a confirmer)" },
+      { title: "Telephone", text: "A completer" },
+      { title: "Adresse", text: "Quebec, Canada — adresse complete a venir" },
+      { title: "Heures", text: "Lun–ven, 9 h–17 h (HNE) — a confirmer" },
+    ],
+    extra: `
+      <form class="contact-form" id="contactForm">
+        <h2>Envoyer un message</h2>
+        <p class="contact-form-note">Formulaire en preparation. Les champs seront branches prochainement.</p>
+        <div class="contact-form-grid">
+          <label>Nom<input name="name" placeholder="Votre nom" disabled /></label>
+          <label>Courriel<input name="email" type="email" placeholder="vous@exemple.com" disabled /></label>
+          <label class="contact-form-full">Sujet<input name="subject" placeholder="Sujet de votre message" disabled /></label>
+          <label class="contact-form-full">Message<textarea name="message" rows="5" placeholder="Votre message..." disabled></textarea></label>
+        </div>
+        <button class="primary" type="button" disabled>Bientot disponible</button>
+      </form>
+    `,
+  },
+  faq: {
+    title: "Foire aux questions",
+    eyebrow: "Aide",
+    intro: "Reponses aux questions frequentes sur Forge2M Apps.",
+    blocks: [
+      {
+        title: "Comment acceder aux applications ?",
+        text: "Connectez-vous avec votre login et code, puis cliquez sur le logo de l'application dans le dashboard.",
+      },
+      {
+        title: "Quels forfaits sont disponibles ?",
+        text: "RedKerf Pro est disponible aujourd'hui. D'autres forfaits seront annonces sur la page Forfaits.",
+      },
+      {
+        title: "Comment changer de forfait ?",
+        text: "La gestion des abonnements via Stripe sera ajoutee prochainement.",
+      },
+      {
+        title: "Probleme technique ?",
+        text: "Consultez la page Support ou contactez-nous via le formulaire de contact.",
+      },
+    ],
+  },
+  support: {
+    title: "Support & aide",
+    eyebrow: "Support",
+    intro: "Ressources pour utiliser le portail et les applications Forge2M.",
+    blocks: [
+      { title: "Demarrage rapide", text: "Connectez-vous, ouvrez le dashboard et lancez RedKerf ou Parcours2M." },
+      { title: "Documentation", text: "Guides detailles par application — a publier prochainement." },
+      { title: "Statut des services", text: "Page de statut en ligne — a ajouter." },
+      { title: "Signaler un bug", text: "Utilisez la page Contactez-nous en decrivant le probleme rencontre." },
+    ],
+  },
+  legal: {
+    title: "Mentions legales",
+    eyebrow: "Legal",
+    intro: "Informations legales relatives au site forge2m.com et a Forge2M Apps.",
+    blocks: [
+      { title: "Editeur du site", text: "Raison sociale, NEQ et adresse — a completer." },
+      { title: "Hebergeur", text: "Cloudflare Pages — details a completer." },
+      { title: "Propriete intellectuelle", text: "Contenus, marques et logos Forge2M — texte legal a completer." },
+      { title: "Responsable de publication", text: "Nom et coordonnees — a completer." },
+    ],
+  },
+  privacy: {
+    title: "Politique de confidentialite",
+    eyebrow: "Legal",
+    intro: "Comment Forge2M traite vos donnees personnelles.",
+    blocks: [
+      { title: "Donnees collectees", text: "Login, usage du portail et donnees de facturation — details a completer." },
+      { title: "Finalite", text: "Authentification, gestion des forfaits et support client." },
+      { title: "Conservation", text: "Durees de conservation — a definir." },
+      { title: "Vos droits", text: "Acces, rectification et suppression — procedure a completer (Loi 25 / RGPD)." },
+    ],
+  },
+  terms: {
+    title: "Conditions d'utilisation",
+    eyebrow: "Legal",
+    intro: "Conditions generales d'utilisation de Forge2M Apps et des applications associees.",
+    blocks: [
+      { title: "Acceptation", text: "En utilisant le portail, vous acceptez ces conditions — texte complet a rediger." },
+      { title: "Comptes et acces", text: "Chaque compte est personnel. Ne partagez pas vos identifiants." },
+      { title: "Forfaits et paiement", text: "Modalites d'abonnement, renouvellement et remboursement — a completer." },
+      { title: "Limitation de responsabilite", text: "Clauses juridiques a valider avec conseil legal." },
+    ],
+  },
+};
+
+const footerSections = [
+  {
+    title: "Forge2M",
+    links: [
+      { label: "A propos", route: "/a-propos" },
+      { label: "Forfaits", route: "/plans" },
+      { label: "Contactez-nous", route: "/contact" },
+    ],
+  },
+  {
+    title: "Aide",
+    links: [
+      { label: "FAQ", route: "/faq" },
+      { label: "Support", route: "/support" },
+      { label: "Demander un acces", route: "/register" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Mentions legales", route: "/mentions-legales" },
+      { label: "Confidentialite", route: "/confidentialite" },
+      { label: "Conditions", route: "/conditions" },
+    ],
+  },
+];
 
 const appRoot = document.getElementById("app");
 
@@ -163,10 +311,88 @@ function shell(content, options = {}) {
       <nav>${nav}</nav>
     </header>
     <main class="${options.wide ? "main wide" : "main"}">${content}</main>
+    ${renderSiteFooter()}
     ${renderPromoTicker()}
   `;
 
   bindGlobalActions();
+}
+
+function renderSiteFooter() {
+  const year = new Date().getFullYear();
+  const columns = footerSections
+    .map(
+      (section) => `
+        <div class="site-footer-col">
+          <strong>${escapeHtml(section.title)}</strong>
+          <ul>
+            ${section.links
+              .map(
+                (link) =>
+                  `<li><button class="site-footer-link" type="button" data-route="${escapeHtml(link.route)}">${escapeHtml(link.label)}</button></li>`
+              )
+              .join("")}
+          </ul>
+        </div>
+      `
+    )
+    .join("");
+
+  return `
+    <footer class="site-footer" aria-label="Pied de page Forge2M">
+      <div class="site-footer-inner">
+        <div class="site-footer-brand">
+          <strong>Forge2M Apps</strong>
+          <p>Portail applicatif — industrie, voyages et outils numeriques.</p>
+          <button class="site-footer-link" type="button" data-route="/">Accueil</button>
+        </div>
+        <div class="site-footer-cols">${columns}</div>
+      </div>
+      <div class="site-footer-bottom">
+        <span>&copy; ${year} Forge2M. Tous droits reserves.</span>
+        <span class="site-footer-bottom-links">
+          <button class="site-footer-link" type="button" data-route="/mentions-legales">Mentions legales</button>
+          <button class="site-footer-link" type="button" data-route="/confidentialite">Confidentialite</button>
+          <button class="site-footer-link" type="button" data-route="/conditions">Conditions</button>
+        </span>
+      </div>
+    </footer>
+  `;
+}
+
+function renderStaticSitePage(pageKey) {
+  const page = sitePageContent[pageKey];
+  if (!page) {
+    shell(`<section class="empty-state"><h1>Page introuvable</h1></section>`);
+    return;
+  }
+
+  const blocks = (page.blocks || [])
+    .map(
+      (block) => `
+        <article class="site-info-card">
+          <h2>${escapeHtml(block.title)}</h2>
+          <p>${escapeHtml(block.text)}</p>
+        </article>
+      `
+    )
+    .join("");
+
+  shell(`
+    <section class="site-page">
+      <header class="site-page-head">
+        <span class="eyebrow">${escapeHtml(page.eyebrow)}</span>
+        <h1>${escapeHtml(page.title)}</h1>
+        <p>${escapeHtml(page.intro)}</p>
+      </header>
+      <div class="site-page-grid">${blocks}</div>
+      ${page.extra || ""}
+      <div class="site-page-actions hero-actions">
+        <button class="secondary" type="button" data-route="/contact">Contactez-nous</button>
+        <button class="ghost" type="button" data-route="/">Retour a l'accueil</button>
+      </div>
+    </section>
+  `);
 }
 
 function renderPromoTickerItem(ad) {

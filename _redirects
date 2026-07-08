@@ -2,6 +2,13 @@
 /login /login 200
 /register /register 200
 /plans /plans 200
+/a-propos /a-propos 200
+/contact /contact 200
+/faq /faq 200
+/support /support 200
+/mentions-legales /mentions-legales 200
+/confidentialite /confidentialite 200
+/conditions /conditions 200
 /apps/* /apps/:splat 200
 /not-included/* /not-included/:splat 200
 /* /index.html 200
