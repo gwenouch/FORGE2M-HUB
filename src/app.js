@@ -313,7 +313,7 @@ function renderTopbarBrand({ logged, compact }) {
   return `
     <button class="brand brand-gif-brand${compact ? " brand-gif-brand-compact" : ""}" data-route="${route}" aria-label="Accueil Forge2M">
       <span class="brand-logo-wrap brand-gif-wrap">
-        <img src="/assets/forge2m.gif" alt="Forge2M" class="brand-logo brand-gif" />
+        <img src="/assets/forge2m.gif?v=hub28" alt="Forge2M" class="brand-logo brand-gif" loading="eager" decoding="async" />
       </span>
       ${copy}
     </button>
@@ -324,7 +324,7 @@ function shell(content, options = {}) {
   const logged = Boolean(state.session?.authenticated);
   const path = currentPath();
   const user = state.session?.user;
-  const brand = renderTopbarBrand({ logged, compact: Boolean(options.dashboardUser) });
+  const brand = renderTopbarBrand({ logged, compact: true });
 
   let header;
   if (options.dashboardUser) {
