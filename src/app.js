@@ -178,7 +178,7 @@ const appSections = [
     description: "Production, coupe, qualite et pilotage atelier.",
     intro: "Applications de production, coupe plasma, atelier et performance industrielle.",
     theme: "industrial",
-    apps: ["redkerf"],
+    apps: ["redkerf", "photo-contour"],
     placeholders: [],
   },
   {

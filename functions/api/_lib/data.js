@@ -36,6 +36,27 @@ export function getApps(env = {}) {
       createdAt: "2026-06-30",
     },
     {
+      id: "app_photo_contour",
+      name: "Photo vers DXF",
+      slug: "photo-contour",
+      description: "Transforme une photo de piece en contour DXF pret pour la coupe.",
+      longDescription:
+        "Photo vers DXF detecte le contour d'une piece sur une photo (seuil automatique, fermeture des taches de bord, ajustement grossir/retrecir) et exporte un DXF ou SVG a l'echelle reelle, avec estimation de la boite englobante en mm, pouces et fractions de pouce.",
+      iconText: "PDX",
+      image: "/assets/redkerf-logo.jpg",
+      status: "active",
+      isActive: true,
+      url: env.PHOTO_CONTOUR_URL || "https://redkerf.forge2m.com/photo-contour.html",
+      tags: ["Photo", "DXF", "Contour"],
+      benefits: [
+        "Transformer une photo en contour DXF",
+        "Mettre le contour a l'echelle reelle (mm ou pouce)",
+        "Estimer la boite englobante en mm, pouces et fractions",
+        "Exporter DXF et SVG en un clic",
+      ],
+      createdAt: "2026-07-16",
+    },
+    {
       id: "app_parcours2m",
       name: "Parcours2M",
       slug: "parcours2m",
@@ -69,7 +90,7 @@ export function getPlans() {
       priceMonthly: 79,
       priceYearly: 790,
       isActive: true,
-      appSlugs: ["redkerf"],
+      appSlugs: ["redkerf", "photo-contour"],
     },
   ];
 }

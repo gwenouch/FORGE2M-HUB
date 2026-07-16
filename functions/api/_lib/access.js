@@ -66,6 +66,7 @@ export function publicApp(app, session) {
 export function publicPlan(plan, session) {
   const appNames = {
     redkerf: "RedKerf",
+    "photo-contour": "Photo vers DXF",
     parcours2m: "Parcours2M",
   };
 
