@@ -37,12 +37,12 @@ export function getApps(env = {}) {
     },
     {
       id: "app_photo_contour",
-      name: "Photo vers DXF",
+      name: "TraceKerf",
       slug: "photo-contour",
-      description: "Transforme une photo de piece en contour DXF pret pour la coupe.",
+      description: "De la photo au trait de coupe : contour DXF pret pour la coupe.",
       longDescription:
-        "Photo vers DXF detecte le contour d'une piece sur une photo (seuil automatique, fermeture des taches de bord, ajustement grossir/retrecir) et exporte un DXF ou SVG a l'echelle reelle, avec estimation de la boite englobante en mm, pouces et fractions de pouce.",
-      iconText: "PDX",
+        "TraceKerf detecte le contour d'une piece sur une photo (seuil automatique, cadrage de la zone de travail, fermeture des taches de bord, ajustement grossir/retrecir, retouche manuelle) et exporte un DXF ou SVG a l'echelle reelle, avec cotes affichees sur la vue et estimation de la boite englobante en mm, pouces et fractions de pouce.",
+      iconText: "TK",
       image: "/assets/redkerf-logo.jpg",
       status: "active",
       isActive: true,
