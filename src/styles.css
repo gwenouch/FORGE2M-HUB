@@ -59,22 +59,6 @@ body::before {
   z-index: 0;
 }
 
-/* Filigrane anime du logo Forge2M en arriere-plan */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("/assets/forge2m.gif?v=hub42");
-  background-repeat: no-repeat;
-  background-position: center 42%;
-  background-size: min(78vmin, 900px);
-  opacity: 0.35;
-  filter: saturate(0.85) contrast(1.05);
-  mask-image: radial-gradient(ellipse 70% 70% at 50% 42%, black, transparent 72%);
-  pointer-events: none;
-  z-index: -1;
-}
-
 button,
 input {
   font: inherit;
