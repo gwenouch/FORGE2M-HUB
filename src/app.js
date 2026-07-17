@@ -209,6 +209,16 @@ const tickerAds = [
     route: "/apps/redkerf",
   },
   {
+    slug: "photo-contour",
+    name: "TraceKerf",
+    logo: "/assets/tracekerf-logo.png",
+    icon: "TK",
+    price: "Nouveau - Inclus RedKerf Pro",
+    pitch: "De la photo au trait de coupe : detourez une piece en photo et exportez un DXF a l'echelle, pret a decouper.",
+    theme: "industrial",
+    route: "/apps/photo-contour",
+  },
+  {
     slug: "parcours2m",
     name: "Parcours2M",
     logo: "/assets/parcours2m-logo.jpg",
