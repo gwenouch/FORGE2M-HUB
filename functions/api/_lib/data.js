@@ -43,7 +43,7 @@ export function getApps(env = {}) {
       longDescription:
         "TraceKerf detecte le contour d'une piece sur une photo (seuil automatique, cadrage de la zone de travail, fermeture des taches de bord, ajustement grossir/retrecir, retouche manuelle) et exporte un DXF ou SVG a l'echelle reelle, avec cotes affichees sur la vue et estimation de la boite englobante en mm, pouces et fractions de pouce.",
       iconText: "TK",
-      image: "/assets/redkerf-logo.jpg",
+      image: "/assets/tracekerf-logo.png",
       status: "active",
       isActive: true,
       url: env.PHOTO_CONTOUR_URL || "https://redkerf.forge2m.com/photo-contour.html",
