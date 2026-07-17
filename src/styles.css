@@ -59,6 +59,21 @@ body::before {
   z-index: 0;
 }
 
+/* Fond anime plein ecran du logo Forge2M */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("/assets/forge2m.gif?v=hub40");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 0.12;
+  filter: saturate(0.85) contrast(1.05);
+  pointer-events: none;
+  z-index: -1;
+}
+
 button,
 input {
   font: inherit;
