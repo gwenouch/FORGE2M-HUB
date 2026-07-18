@@ -1187,7 +1187,8 @@ input:focus {
 .tile-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #fdfbf7;
   display: block;
 }
 
@@ -2052,7 +2053,8 @@ input:focus {
 .promo-ticker-logo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #fdfbf7;
 }
 
 .promo-ticker-fallback {
