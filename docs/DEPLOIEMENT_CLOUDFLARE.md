@@ -19,6 +19,8 @@ Dans Cloudflare Pages > Settings > Environment variables:
 - `HUB_ADMIN_LOGIN`: login du compte principal.
 - `HUB_ADMIN_CODE`: code du compte principal.
 - `REDKERF_URL`: `https://redkerf.forge2m.com`.
+- `PHOTO_CONTOUR_URL`: `https://redkerf.forge2m.com/photo-contour.html`.
+- `PILOTAGE_CNC_URL`: `https://redkerf.forge2m.com/pilotage-cnc/`.
 
 ## Suite prevue
 

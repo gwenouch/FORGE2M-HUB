@@ -57,6 +57,27 @@ export function getApps(env = {}) {
       createdAt: "2026-07-16",
     },
     {
+      id: "app_pilotage_cnc",
+      name: "DriveKerf",
+      slug: "pilotage-cnc",
+      description: "Pilotage live CNC : jog, manette Xbox, G-code, Wi-Fi et USB.",
+      longDescription:
+        "DriveKerf pilote la CNC plasma en direct : connexion USB serie ou Wi-Fi, homing, jog au pave et au clavier, manette Xbox (X/Y/Z + torche M3/M5), streaming G-code et profils multi-controleurs (Grbl, FluidNC, grblHAL).",
+      iconText: "DK",
+      image: "/assets/drivekerf-logo.png",
+      status: "active",
+      isActive: true,
+      url: env.PILOTAGE_CNC_URL || "https://redkerf.forge2m.com/pilotage-cnc/",
+      tags: ["CNC", "Pilotage", "G-code"],
+      benefits: [
+        "Piloter la machine en live (fleches, clavier, manette)",
+        "Connecter en USB serie ou Wi-Fi",
+        "Homing, torche M3/M5 et streaming G-code",
+        "Architecture multi-controleurs Grbl / FluidNC / grblHAL",
+      ],
+      createdAt: "2026-07-17",
+    },
+    {
       id: "app_parcours2m",
       name: "Parcours2M",
       slug: "parcours2m",
@@ -90,7 +111,7 @@ export function getPlans() {
       priceMonthly: 79,
       priceYearly: 790,
       isActive: true,
-      appSlugs: ["redkerf", "photo-contour"],
+      appSlugs: ["redkerf", "photo-contour", "pilotage-cnc"],
     },
   ];
 }

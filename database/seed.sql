@@ -19,6 +19,18 @@ VALUES (
   1
 );
 
+INSERT OR IGNORE INTO apps (id, name, slug, description, icon, status, url, is_active)
+VALUES (
+  'app_pilotage_cnc',
+  'DriveKerf',
+  'pilotage-cnc',
+  'Pilotage live CNC : jog, manette, G-code, USB et Wi-Fi.',
+  'DK',
+  'active',
+  'https://redkerf.forge2m.com/pilotage-cnc/',
+  1
+);
+
 INSERT OR IGNORE INTO plans (id, name, slug, description, price_monthly, price_yearly, is_active)
 VALUES (
   'plan_redkerf_pro',
@@ -32,6 +44,9 @@ VALUES (
 
 INSERT OR IGNORE INTO plan_apps (plan_id, app_id)
 VALUES ('plan_redkerf_pro', 'app_redkerf');
+
+INSERT OR IGNORE INTO plan_apps (plan_id, app_id)
+VALUES ('plan_redkerf_pro', 'app_pilotage_cnc');
 
 INSERT OR IGNORE INTO subscriptions (
   id,

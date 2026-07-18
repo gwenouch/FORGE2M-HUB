@@ -178,7 +178,7 @@ const appSections = [
     description: "Production, coupe, qualite et pilotage atelier.",
     intro: "Applications de production, coupe plasma, atelier et performance industrielle.",
     theme: "industrial",
-    apps: ["redkerf", "photo-contour"],
+    apps: ["redkerf", "photo-contour", "pilotage-cnc"],
     placeholders: [],
   },
   {
@@ -217,6 +217,16 @@ const tickerAds = [
     pitch: "De la photo au trait de coupe : detourez une piece en photo et exportez un DXF a l'echelle, pret a decouper.",
     theme: "industrial",
     route: "/apps/photo-contour",
+  },
+  {
+    slug: "pilotage-cnc",
+    name: "DriveKerf",
+    logo: "/assets/drivekerf-logo.png",
+    icon: "DK",
+    price: "Inclus RedKerf Pro",
+    pitch: "Pilotez la CNC en direct : jog, manette Xbox, torche M3/M5, G-code, USB et Wi-Fi.",
+    theme: "industrial",
+    route: "/apps/pilotage-cnc",
   },
   {
     slug: "parcours2m",

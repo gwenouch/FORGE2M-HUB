@@ -67,6 +67,7 @@ export function publicPlan(plan, session) {
   const appNames = {
     redkerf: "RedKerf",
     "photo-contour": "TraceKerf",
+    "pilotage-cnc": "DriveKerf",
     parcours2m: "Parcours2M",
   };
 
