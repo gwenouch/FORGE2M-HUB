@@ -178,7 +178,7 @@ const appSections = [
     description: "Production, coupe, qualite et pilotage atelier.",
     intro: "Applications de production, coupe plasma, atelier et performance industrielle.",
     theme: "industrial",
-    apps: ["photo-contour", "redkerf", "pilotage-cnc"],
+    apps: ["photo-contour", "viewkerf", "redkerf", "pilotage-cnc"],
     placeholders: [],
   },
   {
@@ -217,6 +217,16 @@ const tickerAds = [
     pitch: "De la photo au trait de coupe : detourez une piece en photo et exportez un DXF a l'echelle, pret a decouper.",
     theme: "industrial",
     route: "/apps/photo-contour",
+  },
+  {
+    slug: "viewkerf",
+    name: "ViewKerf",
+    logo: "",
+    icon: "VK",
+    price: "Inclus RedKerf Pro",
+    pitch: "Ouvrez, nettoyez et mesurez vos DXF, visualisez la tole en 3D, ajoutez du texte et envoyez vers RedKerf.",
+    theme: "industrial",
+    route: "/apps/viewkerf",
   },
   {
     slug: "pilotage-cnc",
@@ -479,8 +489,9 @@ function renderPromoTickerItem(ad) {
   return `
     <a class="promo-ticker-item promo-ticker-item-${escapeHtml(ad.theme)}" href="${escapeHtml(ad.route)}" data-route="${escapeHtml(ad.route)}">
       <span class="promo-ticker-logo">
-        <img src="${escapeHtml(ad.logo)}" alt="" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false" />
-        <span class="promo-ticker-fallback" hidden>${escapeHtml(ad.icon)}</span>
+        ${ad.logo
+          ? `<img src="${escapeHtml(ad.logo)}" alt="" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false" /><span class="promo-ticker-fallback" hidden>${escapeHtml(ad.icon)}</span>`
+          : `<span class="promo-ticker-fallback">${escapeHtml(ad.icon)}</span>`}
       </span>
       <span class="promo-ticker-copy">
         <strong>${escapeHtml(ad.name)}</strong>

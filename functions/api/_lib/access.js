@@ -68,6 +68,7 @@ export function publicPlan(plan, session) {
     redkerf: "RedKerf",
     "photo-contour": "TraceKerf",
     "pilotage-cnc": "DriveKerf",
+    viewkerf: "ViewKerf",
     parcours2m: "Parcours2M",
   };
 

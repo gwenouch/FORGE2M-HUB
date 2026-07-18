@@ -57,6 +57,26 @@ export function getApps(env = {}) {
       createdAt: "2026-07-16",
     },
     {
+      id: "app_viewkerf",
+      name: "ViewKerf",
+      slug: "viewkerf",
+      description: "Lecteur DXF : nettoyage, mesure, vue 3D et ajout de texte.",
+      longDescription:
+        "ViewKerf ouvre vos DXF pour les verifier avant la coupe : calques, selection, suppression des doublons et micro-contours, jonction et fermeture des contours ouverts, simplification, mesure entre deux points, ajout de texte vectoriel, vue 3D extrudee a l'epaisseur de tole, export DXF nettoye et envoi direct vers RedKerf.",
+      iconText: "VK",
+      status: "active",
+      isActive: true,
+      url: env.VIEWKERF_URL || "https://redkerf.forge2m.com/viewkerf/",
+      tags: ["DXF", "Nettoyage", "3D"],
+      benefits: [
+        "Verifier et nettoyer un DXF avant la coupe",
+        "Mesurer les pieces et coter les dimensions",
+        "Visualiser la tole en 3D a l'epaisseur reelle",
+        "Ajouter du texte et envoyer direct vers RedKerf",
+      ],
+      createdAt: "2026-07-18",
+    },
+    {
       id: "app_pilotage_cnc",
       name: "DriveKerf",
       slug: "pilotage-cnc",
@@ -111,7 +131,7 @@ export function getPlans() {
       priceMonthly: 79,
       priceYearly: 790,
       isActive: true,
-      appSlugs: ["redkerf", "photo-contour", "pilotage-cnc"],
+      appSlugs: ["redkerf", "photo-contour", "pilotage-cnc", "viewkerf"],
     },
   ];
 }
