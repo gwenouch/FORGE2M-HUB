@@ -64,7 +64,7 @@ export function getApps(env = {}) {
       longDescription:
         "DriveKerf pilote la CNC plasma en direct : connexion USB serie ou Wi-Fi, homing, jog au pave et au clavier, manette Xbox (X/Y/Z + torche M3/M5), streaming G-code et profils multi-controleurs (Grbl, FluidNC, grblHAL).",
       iconText: "DK",
-      image: "/assets/drivekerf-logo.png",
+      image: "/assets/drivekerf-logo.png?v=2",
       status: "active",
       isActive: true,
       url: env.PILOTAGE_CNC_URL || "https://redkerf.forge2m.com/pilotage-cnc/",

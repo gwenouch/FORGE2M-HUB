@@ -221,7 +221,7 @@ const tickerAds = [
   {
     slug: "pilotage-cnc",
     name: "DriveKerf",
-    logo: "/assets/drivekerf-logo.png",
+    logo: "/assets/drivekerf-logo.png?v=2",
     icon: "DK",
     price: "Inclus RedKerf Pro",
     pitch: "Pilotez la CNC en direct : jog, manette Xbox, torche M3/M5, G-code, USB et Wi-Fi.",
