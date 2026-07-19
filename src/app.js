@@ -201,7 +201,7 @@ const tickerAds = [
   {
     slug: "redkerf",
     name: "RedKerf",
-    logo: "/assets/redkerf-logo.jpg",
+    logo: "/assets/redkerf-logo-square.png?v=1",
     icon: "RK",
     price: "79 $/mois",
     pitch: "Gagnez des heures sur chaque programme plasma : DXF, imbrication, simulation et G-code pret machine.",
