@@ -221,7 +221,7 @@ const tickerAds = [
   {
     slug: "viewkerf",
     name: "ViewKerf",
-    logo: "",
+    logo: "/assets/viewkerf-logo.png",
     icon: "VK",
     price: "Inclus RedKerf Pro",
     pitch: "Ouvrez, nettoyez et mesurez vos DXF, visualisez la tole en 3D, ajoutez du texte et envoyez vers RedKerf.",

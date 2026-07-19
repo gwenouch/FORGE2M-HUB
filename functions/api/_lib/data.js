@@ -64,6 +64,7 @@ export function getApps(env = {}) {
       longDescription:
         "ViewKerf ouvre vos DXF pour les verifier avant la coupe : calques, selection, suppression des doublons et micro-contours, jonction et fermeture des contours ouverts, simplification, mesure entre deux points, ajout de texte vectoriel, vue 3D extrudee a l'epaisseur de tole, export DXF nettoye et envoi direct vers RedKerf.",
       iconText: "VK",
+      image: "/assets/viewkerf-logo.png",
       status: "active",
       isActive: true,
       url: env.VIEWKERF_URL || "https://redkerf.forge2m.com/viewkerf/",
