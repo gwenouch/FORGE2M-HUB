@@ -211,7 +211,7 @@ const tickerAds = [
   {
     slug: "photo-contour",
     name: "TraceKerf",
-    logo: "/assets/tracekerf-logo.png",
+    logo: "/assets/tracekerf-logo-square.png?v=1",
     icon: "TK",
     price: "Nouveau - Inclus RedKerf Pro",
     pitch: "De la photo au trait de coupe : detourez une piece en photo et exportez un DXF a l'echelle, pret a decouper.",
