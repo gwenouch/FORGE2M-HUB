@@ -22,7 +22,7 @@ export function getApps(env = {}) {
       longDescription:
         "RedKerf centralise la preparation de coupe plasma : import DXF, optimisation, ordre de coupe, simulation et generation G-code.",
       iconText: "RK",
-      image: "/assets/redkerf-logo-square.png?v=1",
+      image: "/assets/redkerf-logo-square.png?v=2",
       status: "active",
       isActive: true,
       url: env.REDKERF_URL || "https://redkerf.forge2m.com",
@@ -43,7 +43,7 @@ export function getApps(env = {}) {
       longDescription:
         "TraceKerf detecte le contour d'une piece sur une photo (seuil automatique, cadrage de la zone de travail, fermeture des taches de bord, ajustement grossir/retrecir, retouche manuelle) et exporte un DXF ou SVG a l'echelle reelle, avec cotes affichees sur la vue et estimation de la boite englobante en mm, pouces et fractions de pouce.",
       iconText: "TK",
-      image: "/assets/tracekerf-logo-square.png?v=1",
+      image: "/assets/tracekerf-logo-square.png?v=2",
       status: "active",
       isActive: true,
       url: env.PHOTO_CONTOUR_URL || "https://redkerf.forge2m.com/photo-contour.html",
@@ -64,7 +64,7 @@ export function getApps(env = {}) {
       longDescription:
         "ViewKerf ouvre vos DXF pour les verifier avant la coupe : calques, selection, suppression des doublons et micro-contours, jonction et fermeture des contours ouverts, simplification, mesure entre deux points, ajout de texte vectoriel, vue 3D extrudee a l'epaisseur de tole, export DXF nettoye et envoi direct vers RedKerf.",
       iconText: "VK",
-      image: "/assets/viewkerf-logo.png",
+      image: "/assets/viewkerf-logo.png?v=2",
       status: "active",
       isActive: true,
       url: env.VIEWKERF_URL || "https://redkerf.forge2m.com/viewkerf/",
@@ -85,7 +85,7 @@ export function getApps(env = {}) {
       longDescription:
         "DriveKerf pilote la CNC plasma en direct : connexion USB serie ou Wi-Fi, homing, jog au pave et au clavier, manette Xbox (X/Y/Z + torche M3/M5), streaming G-code et profils multi-controleurs (Grbl, FluidNC, grblHAL).",
       iconText: "DK",
-      image: "/assets/drivekerf-logo.png?v=2",
+      image: "/assets/drivekerf-logo.png?v=3",
       status: "active",
       isActive: true,
       url: env.PILOTAGE_CNC_URL || "https://redkerf.forge2m.com/pilotage-cnc/",

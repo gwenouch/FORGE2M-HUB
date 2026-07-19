@@ -201,7 +201,7 @@ const tickerAds = [
   {
     slug: "redkerf",
     name: "RedKerf",
-    logo: "/assets/redkerf-logo-square.png?v=1",
+    logo: "/assets/redkerf-logo-square.png?v=2",
     icon: "RK",
     price: "79 $/mois",
     pitch: "Gagnez des heures sur chaque programme plasma : DXF, imbrication, simulation et G-code pret machine.",
@@ -211,7 +211,7 @@ const tickerAds = [
   {
     slug: "photo-contour",
     name: "TraceKerf",
-    logo: "/assets/tracekerf-logo-square.png?v=1",
+    logo: "/assets/tracekerf-logo-square.png?v=2",
     icon: "TK",
     price: "Nouveau - Inclus RedKerf Pro",
     pitch: "De la photo au trait de coupe : detourez une piece en photo et exportez un DXF a l'echelle, pret a decouper.",
@@ -221,7 +221,7 @@ const tickerAds = [
   {
     slug: "viewkerf",
     name: "ViewKerf",
-    logo: "/assets/viewkerf-logo.png",
+    logo: "/assets/viewkerf-logo.png?v=2",
     icon: "VK",
     price: "Inclus RedKerf Pro",
     pitch: "Ouvrez, nettoyez et mesurez vos DXF, visualisez la tole en 3D, ajoutez du texte et envoyez vers RedKerf.",
@@ -231,7 +231,7 @@ const tickerAds = [
   {
     slug: "pilotage-cnc",
     name: "DriveKerf",
-    logo: "/assets/drivekerf-logo.png?v=2",
+    logo: "/assets/drivekerf-logo.png?v=3",
     icon: "DK",
     price: "Inclus RedKerf Pro",
     pitch: "Pilotez la CNC en direct : jog, manette Xbox, torche M3/M5, G-code, USB et Wi-Fi.",
