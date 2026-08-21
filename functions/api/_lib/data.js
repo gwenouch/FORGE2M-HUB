@@ -99,6 +99,27 @@ export function getApps(env = {}) {
       createdAt: "2026-07-17",
     },
     {
+      id: "app_pulse",
+      name: "Pulse",
+      slug: "pulse",
+      description: "Gestion de projet industrielle : Command Center, Pulse et mode PMP.",
+      longDescription:
+        "Pulse est le SaaS de gestion de projet Forge2M pour l'industrie, l'ingenierie et la delivery : organisations multi-tenant, projets, taches, Project Command Center et Project Pulse pour savoir ou agir en 30 secondes. S'inspire des pratiques PMP sans pretendre a une certification PMI.",
+      iconText: "PL",
+      image: "/assets/pulse-logo.png?v=1",
+      status: "active",
+      isActive: true,
+      url: env.PULSE_URL || "https://pulse.forge2m.com",
+      tags: ["Projets", "PMP", "Atelier"],
+      benefits: [
+        "Voir immediatement ou agir (Project Pulse)",
+        "Piloter projets et taches en mode Simple / Projet / Avance",
+        "Organisations multi-tenant avec roles",
+        "Aligne atelier CNC et suivi de projet dans Forge2M",
+      ],
+      createdAt: "2026-08-21",
+    },
+    {
       id: "app_parcours2m",
       name: "Parcours2M",
       slug: "parcours2m",
@@ -132,7 +153,7 @@ export function getPlans() {
       priceMonthly: 79,
       priceYearly: 790,
       isActive: true,
-      appSlugs: ["redkerf", "photo-contour", "pilotage-cnc", "viewkerf"],
+      appSlugs: ["redkerf", "photo-contour", "pilotage-cnc", "viewkerf", "pulse"],
     },
   ];
 }

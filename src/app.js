@@ -178,7 +178,7 @@ const appSections = [
     description: "Production, coupe, qualite et pilotage atelier.",
     intro: "Applications de production, coupe plasma, atelier et performance industrielle.",
     theme: "industrial",
-    apps: ["photo-contour", "viewkerf", "redkerf", "pilotage-cnc"],
+    apps: ["photo-contour", "viewkerf", "redkerf", "pilotage-cnc", "pulse"],
     placeholders: [],
   },
   {
@@ -237,6 +237,16 @@ const tickerAds = [
     pitch: "Pilotez la CNC en direct : jog, manette Xbox, torche M3/M5, G-code, USB et Wi-Fi.",
     theme: "industrial",
     route: "/apps/pilotage-cnc",
+  },
+  {
+    slug: "pulse",
+    name: "Pulse",
+    logo: "/assets/pulse-logo.png?v=1",
+    icon: "PL",
+    price: "Inclus RedKerf Pro",
+    pitch: "Gestion de projet industrielle : Project Pulse, Command Center et pratiques PMP pour savoir ou agir.",
+    theme: "industrial",
+    route: "/apps/pulse",
   },
   {
     slug: "parcours2m",
