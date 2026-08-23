@@ -120,6 +120,26 @@ export function getApps(env = {}) {
       createdAt: "2026-08-21",
     },
     {
+      id: "app_judoka",
+      name: "Judoka",
+      slug: "judoka",
+      description: "Guide interactif des techniques de judo, ceinture apres ceinture.",
+      longDescription:
+        "Judoka accompagne la progression du judoka avec les prises essentielles classees par ceinture, des fiches simples, des conseils de securite et un suivi personnel enregistre sur l'appareil.",
+      iconText: "柔",
+      status: "active",
+      isActive: true,
+      url: env.JUDOKA_URL || "https://judo.forge2m.com",
+      tags: ["Judo", "Techniques", "Progression"],
+      benefits: [
+        "Voir les techniques a connaitre pour chaque ceinture",
+        "Rechercher rapidement une prise en japonais ou en francais",
+        "Ouvrir une fiche avec le point cle de la technique",
+        "Enregistrer sa progression sur son appareil",
+      ],
+      createdAt: "2026-08-23",
+    },
+    {
       id: "app_parcours2m",
       name: "Parcours2M",
       slug: "parcours2m",
@@ -153,7 +173,7 @@ export function getPlans() {
       priceMonthly: 79,
       priceYearly: 790,
       isActive: true,
-      appSlugs: ["redkerf", "photo-contour", "pilotage-cnc", "viewkerf", "pulse"],
+      appSlugs: ["redkerf", "photo-contour", "pilotage-cnc", "viewkerf", "pulse", "judoka"],
     },
   ];
 }
