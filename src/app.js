@@ -32,7 +32,7 @@ const sitePageContent = {
     title: "A propos de Forge2M",
     eyebrow: "Entreprise",
     intro:
-      "Forge2M developpe des applications pour l'industrie, les voyages et les futurs outils numeriques de la suite.",
+      "Forge2M developpe des applications pour l'industrie, les voyages et les outils utilitaires du quotidien.",
     blocks: [
       {
         title: "Notre mission",
@@ -191,10 +191,20 @@ const appSections = [
     apps: ["judoka", "parcours2m"],
     placeholders: [],
   },
+  {
+    id: "utility",
+    title: "Suite Utilitaire",
+    shortTitle: "Utilitaire",
+    description: "Outils pratiques pour simplifier les taches du quotidien.",
+    intro: "Les utilitaires Forge2M reunis dans un espace simple et rapide.",
+    theme: "utility",
+    apps: [],
+    placeholders: ["Premier utilitaire en preparation"],
+  },
 ];
 
 function getLiveAppSections() {
-  return appSections.filter((section) => section.apps.length > 0);
+  return appSections.filter((section) => section.apps.length > 0 || section.placeholders.length > 0);
 }
 
 const tickerAds = [
@@ -586,7 +596,7 @@ function renderHome() {
         <span class="eyebrow">Plateforme Forge2M</span>
         <h1>Toutes vos applications, un seul portail.</h1>
         <p>
-          Lancez RedKerf, Parcours2M et les futurs outils Forge2M depuis un hub unique.
+          Lancez RedKerf, Parcours2M et les futurs utilitaires Forge2M depuis un hub unique.
           Gerez vos forfaits et ouvrez chaque application en un clic.
         </p>
         <div class="hero-actions">
@@ -599,7 +609,7 @@ function renderHome() {
             <span>Applications en catalogue</span>
           </div>
           <div class="hero-stat">
-            <strong>2</strong>
+            <strong>3</strong>
             <span>Suites actives</span>
           </div>
           <div class="hero-stat">
@@ -736,9 +746,20 @@ function renderDirectDashboard() {
         .filter(Boolean)
         .map(renderAppTile)
         .join("");
-      if (!tiles) {
-        return "";
-      }
+      const placeholders = section.placeholders
+        .map(
+          (label) => `
+            <article class="suite-reserved-slot" aria-label="${escapeHtml(label)}">
+              <span class="suite-reserved-mark">U</span>
+              <div>
+                <span class="suite-reserved-kicker">A venir</span>
+                <strong>${escapeHtml(label)}</strong>
+                <p>Une nouvelle application trouvera sa place ici.</p>
+              </div>
+            </article>
+          `
+        )
+        .join("");
       return `
         <section class="dashboard-suite-block suite-${escapeHtml(section.theme)}">
           <div class="section-title-row">
@@ -747,7 +768,7 @@ function renderDirectDashboard() {
               <p>${escapeHtml(section.description)}</p>
             </div>
           </div>
-          <div class="launcher-grid dashboard-launcher-grid">${tiles}</div>
+          <div class="launcher-grid dashboard-launcher-grid">${tiles}${placeholders}</div>
         </section>
       `;
     })

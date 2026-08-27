@@ -19,6 +19,8 @@
   --travel: #5ec4e8;
   --travel-soft: rgba(94, 196, 232, 0.14);
   --lab: #a8b4c4;
+  --utility: #87d8a6;
+  --utility-soft: rgba(135, 216, 166, 0.12);
   --radius: 12px;
   --radius-lg: 18px;
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
@@ -778,6 +780,59 @@ input:focus {
   background:
     radial-gradient(circle at 90% 0%, rgba(94, 196, 232, 0.1), transparent 42%),
     rgba(14, 19, 23, 0.82);
+}
+
+.dashboard-suite-block.suite-utility {
+  border-color: rgba(135, 216, 166, 0.26);
+  background:
+    repeating-linear-gradient(135deg, rgba(135, 216, 166, 0.035) 0 1px, transparent 1px 28px),
+    rgba(14, 19, 23, 0.82);
+}
+
+.suite-reserved-slot {
+  grid-column: 1 / -1;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  border: 1px dashed rgba(135, 216, 166, 0.38);
+  border-radius: var(--radius);
+  background: var(--utility-soft);
+}
+
+.suite-reserved-mark {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 72px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(135, 216, 166, 0.42);
+  border-radius: 8px;
+  background: rgba(7, 15, 12, 0.72);
+  color: var(--utility);
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.suite-reserved-kicker {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--utility);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.suite-reserved-slot strong {
+  display: block;
+  font-size: 1.1rem;
+}
+
+.suite-reserved-slot p {
+  margin: 4px 0 0;
+  color: var(--muted);
 }
 
 .dashboard-launcher-grid {
