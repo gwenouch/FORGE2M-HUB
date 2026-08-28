@@ -1,7 +1,10 @@
+const PLAN_SELECTION_KEY = "forge2m-custom-plan-selection";
+
 const state = {
   session: null,
   apps: [],
   plans: [],
+  planSelection: new Set(loadPlanSelection()),
   activeSuite: null,
   loading: true,
   error: "",
@@ -83,11 +86,11 @@ const sitePageContent = {
       },
       {
         title: "Quels forfaits sont disponibles ?",
-        text: "RedKerf Pro est disponible aujourd'hui. D'autres forfaits seront annonces sur la page Forfaits.",
+        text: "Le forfait Forge2M se compose a la carte. Cochez les applications souhaitees et le prix mensuel s'ajuste automatiquement.",
       },
       {
         title: "Comment changer de forfait ?",
-        text: "La gestion des abonnements via Stripe sera ajoutee prochainement.",
+        text: "Ouvrez la page Forfaits, modifiez votre selection puis enregistrez-la. Le paiement Stripe sera ajoute lors de la mise en vente.",
       },
       {
         title: "Probleme technique ?",
@@ -205,6 +208,31 @@ const appSections = [
 
 function getLiveAppSections() {
   return appSections.filter((section) => section.apps.length > 0 || section.placeholders.length > 0);
+}
+
+function loadPlanSelection() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(PLAN_SELECTION_KEY) || "[]");
+    return Array.isArray(stored) ? stored.filter((slug) => typeof slug === "string") : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function savePlanSelection() {
+  try {
+    localStorage.setItem(PLAN_SELECTION_KEY, JSON.stringify([...state.planSelection]));
+  } catch (error) {
+    // The configurator remains usable when browser storage is unavailable.
+  }
+}
+
+function formatCad(value) {
+  return new Intl.NumberFormat("fr-CA", {
+    style: "currency",
+    currency: "CAD",
+    maximumFractionDigits: 0,
+  }).format(Number(value) || 0);
 }
 
 const tickerAds = [
@@ -330,13 +358,14 @@ function requireSession() {
 
 async function bootstrap() {
   try {
-    const session = await api("/api/auth/session");
+    const [session, apps, plans] = await Promise.all([
+      api("/api/auth/session"),
+      api("/api/apps"),
+      api("/api/plans"),
+    ]);
     state.session = session;
-    if (session.authenticated) {
-      const [apps, plans] = await Promise.all([api("/api/apps"), api("/api/plans")]);
-      state.apps = apps.apps;
-      state.plans = plans.plans;
-    }
+    state.apps = apps.apps;
+    state.plans = plans.plans;
   } catch (error) {
     state.error = error.message;
   } finally {
@@ -587,6 +616,130 @@ function bindGlobalActions() {
       render();
     });
   });
+
+  document.querySelectorAll("[data-plan-app]").forEach((input) => {
+    input.addEventListener("change", () => {
+      if (input.checked) {
+        state.planSelection.add(input.dataset.planApp);
+      } else {
+        state.planSelection.delete(input.dataset.planApp);
+      }
+      savePlanSelection();
+      updatePlanBuilderUi();
+    });
+  });
+
+  document.querySelectorAll("[data-plan-suite]").forEach((input) => {
+    input.addEventListener("change", () => {
+      const slugs = String(input.dataset.planSuiteApps || "").split(",").filter(Boolean);
+      slugs.forEach((slug) => {
+        if (input.checked) {
+          state.planSelection.add(slug);
+        } else {
+          state.planSelection.delete(slug);
+        }
+      });
+      savePlanSelection();
+      updatePlanBuilderUi();
+    });
+  });
+
+  document.querySelectorAll("[data-action='reset-custom-plan']").forEach((element) => {
+    element.addEventListener("click", () => {
+      state.planSelection.clear();
+      savePlanSelection();
+      updatePlanBuilderUi();
+    });
+  });
+
+  document.querySelectorAll("[data-action='save-custom-plan']").forEach((element) => {
+    element.addEventListener("click", async () => {
+      savePlanSelection();
+      const message = qs("[data-plan-message]");
+      element.disabled = true;
+      if (message) message.textContent = "Verification du tarif...";
+
+      try {
+        const quote = await api("/api/plans/quote", {
+          method: "POST",
+          body: JSON.stringify({ appSlugs: [...state.planSelection] }),
+        });
+        const totalNode = qs("[data-plan-total]");
+        const annualNode = qs("[data-plan-annual]");
+        if (totalNode) totalNode.textContent = formatCad(quote.priceMonthly);
+        if (annualNode) annualNode.textContent = formatCad(quote.priceYearly);
+        if (message) {
+          message.textContent = `Selection enregistree et tarif confirme : ${formatCad(quote.priceMonthly)} par mois.`;
+        }
+      } catch (error) {
+        if (message) message.textContent = error.message;
+      } finally {
+        element.disabled = state.planSelection.size === 0;
+      }
+    });
+  });
+}
+
+function selectedPlanApps() {
+  return state.apps.filter(
+    (app) => app.isPurchasable && state.planSelection.has(app.slug)
+  );
+}
+
+function renderPlanSelectionList(apps) {
+  if (!apps.length) {
+    return `<p class="plan-summary-empty">Cochez les applications dont vous avez besoin.</p>`;
+  }
+
+  return `
+    <ul class="plan-summary-list">
+      ${apps
+        .map(
+          (app) => `
+            <li>
+              <span>${escapeHtml(app.name)}</span>
+              <strong>${escapeHtml(formatCad(app.priceMonthly))}</strong>
+            </li>
+          `
+        )
+        .join("")}
+    </ul>
+  `;
+}
+
+function updatePlanBuilderUi() {
+  const apps = selectedPlanApps();
+  const total = apps.reduce((sum, app) => sum + Number(app.priceMonthly || 0), 0);
+  const count = apps.length;
+
+  document.querySelectorAll("[data-plan-app]").forEach((input) => {
+    const selected = state.planSelection.has(input.dataset.planApp);
+    input.checked = selected;
+    input.closest(".plan-app-option")?.classList.toggle("selected", selected);
+  });
+
+  document.querySelectorAll("[data-plan-suite]").forEach((input) => {
+    const slugs = String(input.dataset.planSuiteApps || "").split(",").filter(Boolean);
+    const selectedCount = slugs.filter((slug) => state.planSelection.has(slug)).length;
+    input.checked = slugs.length > 0 && selectedCount === slugs.length;
+    input.indeterminate = selectedCount > 0 && selectedCount < slugs.length;
+  });
+
+  const countNode = qs("[data-plan-count]");
+  const totalNode = qs("[data-plan-total]");
+  const annualNode = qs("[data-plan-annual]");
+  const listNode = qs("[data-plan-selected-list]");
+  const saveButton = qs("[data-action='save-custom-plan']");
+  const resetButton = qs("[data-action='reset-custom-plan']");
+  const message = qs("[data-plan-message]");
+
+  if (countNode) countNode.textContent = `${count} application${count > 1 ? "s" : ""}`;
+  if (totalNode) totalNode.textContent = formatCad(total);
+  if (annualNode) annualNode.textContent = formatCad(total * 12);
+  if (listNode) listNode.innerHTML = renderPlanSelectionList(apps);
+  if (saveButton) saveButton.disabled = count === 0;
+  if (resetButton) resetButton.disabled = count === 0;
+  if (message) message.textContent = "";
 }
 
 function renderHome() {
@@ -922,67 +1075,135 @@ async function renderAppDetail(slug) {
 }
 
 function renderPlans() {
-  if (!state.session?.authenticated) {
-    shell(`
-      <section class="plans-head">
-        <span class="eyebrow">Forfaits</span>
-        <h1>Des packs pour construire la suite Forge2M.</h1>
-        <p>Connectez-vous pour voir votre forfait actif.</p>
-      </section>
-      ${renderPlanGrid()}
-    `, { wide: true });
-    return;
-  }
+  const validSlugs = new Set(state.apps.filter((app) => app.isPurchasable).map((app) => app.slug));
+  state.planSelection = new Set([...state.planSelection].filter((slug) => validSlugs.has(slug)));
 
-  shell(`
-    <section class="plans-head">
-      <span class="eyebrow">Abonnements</span>
-      <h1>Forfait actuel : ${escapeHtml(state.session.organization.planName)}</h1>
-      <p>Stripe sera branche ici pour acheter, changer ou gerer un abonnement.</p>
-    </section>
-    ${renderPlanGrid()}
-  `, { wide: true });
+  const selectedApps = selectedPlanApps();
+  const total = selectedApps.reduce((sum, app) => sum + Number(app.priceMonthly || 0), 0);
+  const currentPlan = state.session?.organization?.planName || "Aucun forfait actif";
+
+  const suiteMarkup = appSections
+    .map((section) => {
+      const apps = state.apps.filter(
+        (app) => app.suiteId === section.id || section.apps.includes(app.slug)
+      );
+      const selectableApps = apps.filter((app) => app.isPurchasable && app.status === "active");
+      const selectableSlugs = selectableApps.map((app) => app.slug);
+      const allSelected =
+        selectableSlugs.length > 0 && selectableSlugs.every((slug) => state.planSelection.has(slug));
+
+      return `
+        <section class="plan-suite plan-suite-${escapeHtml(section.theme)}">
+          <header class="plan-suite-head">
+            <div>
+              <span class="plan-suite-kicker">${escapeHtml(section.shortTitle)}</span>
+              <h2>${escapeHtml(section.title)}</h2>
+              <p>${escapeHtml(section.description)}</p>
+            </div>
+            ${
+              selectableSlugs.length
+                ? `<label class="plan-suite-toggle">
+                    <input
+                      type="checkbox"
+                      data-plan-suite="${escapeHtml(section.id)}"
+                      data-plan-suite-apps="${escapeHtml(selectableSlugs.join(","))}"
+                      ${allSelected ? "checked" : ""}
+                    />
+                    <span>Choisir toute la suite</span>
+                  </label>`
+                : `<span class="badge locked">Applications a venir</span>`
+            }
+          </header>
+          <div class="plan-app-list">
+            ${
+              apps.length
+                ? apps.map((app) => renderPlanAppOption(app)).join("")
+                : `<div class="plan-suite-empty">La premiere application Utilitaire sera ajoutee ici.</div>`
+            }
+          </div>
+        </section>
+      `;
+    })
+    .join("");
+
+  shell(
+    `
+      <section class="plans-head plans-head-builder">
+        <div>
+          <span class="eyebrow">Forfait sur mesure</span>
+          <h1>Composez votre forfait, application par application.</h1>
+          <p>Cochez uniquement les outils dont vous avez besoin. Les prix s'additionnent automatiquement.</p>
+        </div>
+        <div class="current-plan-chip">
+          <span>Acces actuel</span>
+          <strong>${escapeHtml(currentPlan)}</strong>
+        </div>
+      </section>
+      <section class="plan-builder-layout">
+        <div class="plan-builder-catalog">${suiteMarkup}</div>
+        <aside class="plan-builder-summary" aria-label="Resume du forfait">
+          <span class="eyebrow">Votre forfait</span>
+          <h2>Selection personnalisee</h2>
+          <div class="plan-summary-count" data-plan-count>
+            ${selectedApps.length} application${selectedApps.length > 1 ? "s" : ""}
+          </div>
+          <div data-plan-selected-list>${renderPlanSelectionList(selectedApps)}</div>
+          <div class="plan-summary-total">
+            <span>Total mensuel</span>
+            <strong data-plan-total>${escapeHtml(formatCad(total))}</strong>
+            <small>CAD / mois, avant taxes</small>
+          </div>
+          <div class="plan-summary-annual">
+            <span>Equivalent annuel</span>
+            <strong data-plan-annual>${escapeHtml(formatCad(total * 12))}</strong>
+          </div>
+          ${
+            state.session?.authenticated
+              ? `<button class="primary plan-summary-action" type="button" data-action="save-custom-plan" ${selectedApps.length ? "" : "disabled"}>Enregistrer ma selection</button>`
+              : `<button class="primary plan-summary-action" type="button" data-route="/login?next=%2Fplans">Se connecter pour continuer</button>`
+          }
+          <button class="secondary" type="button" data-action="reset-custom-plan" ${selectedApps.length ? "" : "disabled"}>Effacer la selection</button>
+          <p class="plan-summary-message" data-plan-message></p>
+          <p class="plan-summary-note">Le prix final sera controle cote serveur avant le futur paiement Stripe.</p>
+        </aside>
+      </section>
+    `,
+    { wide: true }
+  );
+  updatePlanBuilderUi();
 }
 
-function renderPlanGrid() {
-  const plans = state.plans.length
-    ? state.plans
-    : [
-        {
-          name: "RedKerf Pro",
-          description: "Acces complet a RedKerf pour la production plasma.",
-          priceMonthly: 79,
-          priceYearly: 790,
-          apps: ["RedKerf"],
-          isCurrent: false,
-        },
-      ];
+function renderPlanAppOption(app) {
+  const selectable = Boolean(app.isPurchasable && app.status === "active");
+  const selected = selectable && state.planSelection.has(app.slug);
+  const included = Boolean(app.access?.allowed);
+  const statusLabel = app.status === "coming-soon" ? "Bientot disponible" : included ? "Inclus actuellement" : "Disponible";
+  const icon = app.image
+    ? `<img src="${escapeHtml(app.image)}" alt="" loading="lazy" />`
+    : `<span>${escapeHtml(app.iconText || app.name.slice(0, 2))}</span>`;
 
   return `
-    <section class="plan-grid">
-      ${plans
-        .map(
-          (plan) => `
-            <article class="plan-card ${plan.isCurrent ? "current" : ""}">
-              <span class="badge ${plan.isCurrent ? "available" : "locked"}">
-                ${plan.isCurrent ? "Forfait actuel" : "Disponible"}
-              </span>
-              <h2>${escapeHtml(plan.name)}</h2>
-              <p>${escapeHtml(plan.description)}</p>
-              <div class="plan-price">
-                ${plan.priceMonthly === 0 ? "Gratuit" : `${plan.priceMonthly} $`}
-                ${plan.priceMonthly > 0 ? "<small>CAD / mois</small>" : ""}
-              </div>
-              ${plan.priceYearly ? `<p style="margin:0;font-size:0.86rem;">ou ${plan.priceYearly} $ CAD / an</p>` : ""}
-              <div class="tag-row">${plan.apps.map((app) => `<span>${escapeHtml(app)}</span>`).join("")}</div>
-              <button class="${plan.isCurrent ? "secondary" : "primary"}" type="button" disabled>
-                ${plan.isCurrent ? "Forfait actif" : "Stripe bientot disponible"}
-              </button>
-            </article>
-          `
-        )
-        .join("")}
-    </section>
+    <label class="plan-app-option${selected ? " selected" : ""}${selectable ? "" : " unavailable"}">
+      <input
+        type="checkbox"
+        data-plan-app="${escapeHtml(app.slug)}"
+        ${selected ? "checked" : ""}
+        ${selectable ? "" : "disabled"}
+      />
+      <span class="plan-app-check" aria-hidden="true"></span>
+      <span class="plan-app-icon">${icon}</span>
+      <span class="plan-app-copy">
+        <span class="plan-app-title-row">
+          <strong>${escapeHtml(app.name)}</strong>
+          <small class="${included ? "is-included" : ""}">${escapeHtml(statusLabel)}</small>
+        </span>
+        <span>${escapeHtml(app.description)}</span>
+      </span>
+      <span class="plan-app-price">
+        <strong>${escapeHtml(formatCad(app.priceMonthly))}</strong>
+        <small>${selectable ? "par mois" : "tarif indicatif"}</small>
+      </span>
+    </label>
   `;
 }
 

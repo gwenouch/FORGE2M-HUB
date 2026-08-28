@@ -25,6 +25,9 @@ export function getApps(env = {}) {
       image: "/assets/redkerf-logo-square.png?v=2",
       status: "active",
       isActive: true,
+      suiteId: "industrial",
+      priceMonthly: 79,
+      isPurchasable: true,
       url: env.REDKERF_URL || "https://redkerf.forge2m.com",
       tags: ["Plasma CAM", "DXF", "G-code"],
       benefits: [
@@ -46,6 +49,9 @@ export function getApps(env = {}) {
       image: "/assets/tracekerf-logo-square.png?v=2",
       status: "active",
       isActive: true,
+      suiteId: "industrial",
+      priceMonthly: 19,
+      isPurchasable: true,
       url: env.PHOTO_CONTOUR_URL || "https://redkerf.forge2m.com/photo-contour.html",
       tags: ["Photo", "DXF", "Contour"],
       benefits: [
@@ -67,6 +73,9 @@ export function getApps(env = {}) {
       image: "/assets/viewkerf-logo.png?v=2",
       status: "active",
       isActive: true,
+      suiteId: "industrial",
+      priceMonthly: 19,
+      isPurchasable: true,
       url: env.VIEWKERF_URL || "https://redkerf.forge2m.com/viewkerf/",
       tags: ["DXF", "Nettoyage", "3D"],
       benefits: [
@@ -88,6 +97,9 @@ export function getApps(env = {}) {
       image: "/assets/drivekerf-logo.png?v=3",
       status: "active",
       isActive: true,
+      suiteId: "industrial",
+      priceMonthly: 29,
+      isPurchasable: true,
       url: env.PILOTAGE_CNC_URL || "https://redkerf.forge2m.com/pilotage-cnc/",
       tags: ["CNC", "Pilotage", "G-code"],
       benefits: [
@@ -109,6 +121,9 @@ export function getApps(env = {}) {
       image: "/assets/pulse-logo.png?v=1",
       status: "active",
       isActive: true,
+      suiteId: "industrial",
+      priceMonthly: 39,
+      isPurchasable: true,
       url: env.PULSE_URL || "https://pulse.forge2m.com",
       tags: ["Projets", "PMP", "Atelier"],
       benefits: [
@@ -129,6 +144,9 @@ export function getApps(env = {}) {
       iconText: "柔",
       status: "active",
       isActive: true,
+      suiteId: "travel",
+      priceMonthly: 9,
+      isPurchasable: true,
       url: env.JUDOKA_URL || "https://judo.forge2m.com",
       tags: ["Judo", "Techniques", "Progression"],
       benefits: [
@@ -150,6 +168,9 @@ export function getApps(env = {}) {
       image: "/assets/parcours2m-logo.jpg",
       status: "coming-soon",
       isActive: true,
+      suiteId: "travel",
+      priceMonthly: 19,
+      isPurchasable: false,
       url: env.PARCOURS2M_URL || "https://parcours2m.forge2m.com",
       tags: ["Voyage", "Itineraires", "Guides"],
       benefits: [
